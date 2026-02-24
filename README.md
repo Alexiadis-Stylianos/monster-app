@@ -1,16 +1,45 @@
-# React + Vite
+# Monster Horde Shop 🧟‍♂️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React application where users can hire monsters in different colors,
+manage their horde, and complete a mock checkout flow.
 
-Currently, two official plugins are available:
+This project focuses on frontend logic, state management, and user experience.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Hire monsters with customizable color options
+- Quantity-based cart management (no duplicates)
+- Persistent cart using LocalStorage
+- Checkout flow with form validation
+- Confirmation modals for destructive actions
+- Toast notifications instead of browser alerts
+- Dark mode support
+- Sound effects (can be toggled)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+- React
+- React Router
+- Context API
+- CSS Modules
+- LocalStorage
+
+---
+
+## Project Notes
+
+- This is a frontend-only project
+- No real payments are processed
+- Designed to demonstrate React state logic and UX patterns
+
+---
+
+## Future Improvements
+
+- Add automated tests
+- Improve accessibility (ARIA, keyboard navigation)
+- Responsive/mobile-first layout

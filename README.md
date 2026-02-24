@@ -1,4 +1,4 @@
-# Monster Horde Shop 🧟‍♂️
+# Monster Horde Shop 
 
 A React application where users can hire monsters in different colors,
 manage their horde, and complete a mock checkout flow.

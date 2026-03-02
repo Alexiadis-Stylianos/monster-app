@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import styles from "./Styles.module.css";
 import { pluralizeMonster } from "./monsterPlurals";
+import mastercard from './Mastercard.png';
+import visa from './Visa.png';
 
 function Checkout({ setToastMessage, horde, setHorde, setPurchased }) {
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased }) {
   const [shakeField, setShakeField] = useState("");
   const [cardType, setCardType] = useState(null);
 
-  // Valid card
+  // Check if the card is valid
   const isValidCardNumber = (number) => {
     const digits = number.replace(/\s/g, "");
     let sum = 0;
@@ -103,7 +105,7 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased }) {
     }));
   };
 
-
+  //Validate if the fields are properly filled
   const validate = () => {
     const newErrors = {};
 
@@ -178,6 +180,17 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased }) {
   const rawCard = formData.cardNumber.replace(/\s/g, "");
   const isCardComplete = rawCard.length === 16;
   const isCardValid = isCardComplete && isValidCardNumber(rawCard);
+
+  //ENTER button works for payment confirmation
+  const confirmButtonRef = useRef(null);
+
+  useEffect(() => {
+    if (confirmOpen) {
+      setTimeout(() => {
+        confirmButtonRef.current?.focus();
+      }, 0);
+    }
+  }, [confirmOpen]);
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -273,8 +286,8 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased }) {
             <img
               src={
                 cardType === "visa"
-                  ? "https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg"
-                  : "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"//Mastercard
+                  ? visa //Visa logo
+                  : mastercard //Mastercard logo
               }
               alt={cardType}
               style={{
@@ -341,6 +354,7 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased }) {
           <p>Are you sure you want to hire these monsters?</p>
 
           <button
+            ref={confirmButtonRef}
             onClick={handleConfirmPayment}
             className={styles.mybutton}
             style={{ backgroundColor: "green" }}

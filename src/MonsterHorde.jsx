@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./Styles.module.css";
 import { pluralizeMonster } from "./monsterPlurals";
 
@@ -35,6 +35,26 @@ function MonsterHorde({ horde, setHorde }) {
       return updated;
     });
   };
+
+  //ENTER confirms removal of items
+  const clearConfirmRef = useRef(null);
+  const removeConfirmRef = useRef(null);
+  useEffect(() => {
+    if (clearConfirmOpen) {
+      setTimeout(() => {
+        clearConfirmRef.current?.focus();
+      }, 0);
+    }
+  }, [clearConfirmOpen]);
+
+  useEffect(() => {
+    if (removeItemConfirm) {
+      setTimeout(() => {
+        removeConfirmRef.current?.focus();
+      }, 0);
+    }
+  }, [removeItemConfirm]);
+
   return (
     <div style={{ textAlign: "center" }}>
       <h1>Your Monster Horde</h1>
@@ -64,12 +84,14 @@ function MonsterHorde({ horde, setHorde }) {
 
       {horde.length > 0 && (
         <>
-          <button onClick={() => setClearConfirmOpen(true)} style={{ marginRight: "10px" }}
+          <button
+            onClick={() => setClearConfirmOpen(true)} style={{ marginRight: "10px" }}
             className={styles.mybutton}>
             Clear All
           </button>
 
-          <button onClick={handleCheckout}
+          <button
+            onClick={handleCheckout}
             className={styles.mybutton}>
             Go to Checkout
           </button>
@@ -82,6 +104,7 @@ function MonsterHorde({ horde, setHorde }) {
         <h2>⚠️ Clear Entire Horde?</h2>
         <p>This will remove ALL monsters from your Horde.</p>
         <button
+          ref={clearConfirmRef}
           onClick={() => {
             setHorde([]);
             setClearConfirmOpen(false);
@@ -117,6 +140,7 @@ function MonsterHorde({ horde, setHorde }) {
             </p>
 
             <button
+              ref={removeConfirmRef}
               onClick={() => {
                 setHorde(prev =>
                   prev.filter((_, i) => i !== removeItemConfirm.index)

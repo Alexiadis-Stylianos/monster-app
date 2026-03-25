@@ -2,7 +2,7 @@ import { Suspense, lazy, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import MonsterHorde from "./MonsterHorde";
 import styles from "./Styles.module.css";
-import { Vampire, Zombie, Ghost, Werewolf } from './Monsters';
+import { Vampire, Zombie, Ghost, Ghoul, Lich, Imp, Succubus, Hellhound, Goblin, Orc, Troll, Werewolf, GiantSpider, DireWolf } from './Monsters';
 import MonsterPics from './MonsterPics.jsx';
 import Checkout from './Checkout';
 import Toast from './Toast';
@@ -73,7 +73,7 @@ function App() {
         {theme === "light" ? "🌙" : "☀️"}
       </button>
       <nav className={styles.pagesCenter}>
-        <NavLink to="/" style={navLinkStyles}>Hire a Monster</NavLink> |{" "}
+        <NavLink to="/" style={navLinkStyles}>Shop</NavLink> |{" "}
         <NavLink to="/horde" style={navLinkStyles}>
           Monster Horde {totalQuantity > 0 && `(${totalQuantity})`}
         </NavLink> |{" "}
@@ -109,7 +109,17 @@ function App() {
             <Route path="vampire" element={<Vampire />} />
             <Route path="ghost" element={<Ghost />} />
             <Route path="zombie" element={<Zombie />} />
+            <Route path="ghoul" element={<Ghoul />} />
+            <Route path="lich" element={<Lich />} />
+            <Route path="imp" element={<Imp />} />
+            <Route path="succubus" element={<Succubus />} />
+            <Route path="hellhound" element={<Hellhound />} />
+            <Route path="goblin" element={<Goblin />} />
+            <Route path="orc" element={<Orc />} />
+            <Route path="troll" element={<Troll />} />
             <Route path="werewolf" element={<Werewolf />} />
+            <Route path="giantSpider" element={<GiantSpider />} />
+            <Route path="direWolf" element={<DireWolf />} />
           </Route>
         </Routes>
       </div>

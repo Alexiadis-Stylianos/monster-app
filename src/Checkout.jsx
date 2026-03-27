@@ -153,7 +153,6 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased }) {
       }
     }
 
-
     if (formData.cvv && formData.cvv.length !== 3) {
       newErrors.cvv = "CVV must be 3 digits";
     }
@@ -215,7 +214,6 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased }) {
           <h3>Total: {total}€</h3>
         </>
       )}
-
 
       <form onSubmit={(e) => {
         e.preventDefault();

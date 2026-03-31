@@ -10,7 +10,6 @@ import monsterData from "./monsterData";
 import MonsterCard from "./MonsterCard";
 
 function MonsterForm({ setHorde, purchased, setPurchased }) {
-    const [inputs, setInputs] = useState({});
     const [selectedMonster, setSelectedMonster] = useState("ghost");
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
@@ -46,21 +45,6 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
         register(exorcismAudio.current);
     }, [register]);
 
-
-    /* --- form handlers --- */
-    const handleChange = (e) => {
-        const { name, type, checked } = e.target;
-        setInputs(prev => ({ ...prev, [name]: type === "checkbox" ? checked : false }));
-    };
-
-    const getSelectedColors = () => {
-        const colors = [];
-        if (inputs.red) colors.push("red");
-        if (inputs.green) colors.push("green");
-        if (inputs.blue) colors.push("blue");
-        return colors.length ? colors : ["normal"];
-    };
-
     //formatting
     const formatList = (arr) => {
         if (arr.length === 1) return arr[0];
@@ -69,8 +53,7 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
     };
 
     // ADD TO HORDE
-    const handleAddToHorde = (monster, quantity) => {
-        const colors = getSelectedColors();
+    const handleAddToHorde = (monster, quantity, colors) => {
         const price = CalculatePrice(monster.id, colors);
 
         play(screamAudio.current);
@@ -137,23 +120,6 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
                         {category}
                     </button>
                 ))}
-            </div>
-
-            {/* COLOR MODIFIERS */}
-            <p>Select modifiers:</p>
-            <div>
-                <label style={{ color: "red" }}>
-                    Red
-                    <input type="checkbox" name="red" onChange={handleChange} />
-                </label>
-                <label style={{ color: "green", marginLeft: "10px" }}>
-                    Green
-                    <input type="checkbox" name="green" onChange={handleChange} />
-                </label>
-                <label style={{ color: "#0178bd", marginLeft: "10px" }}>
-                    Blue
-                    <input type="checkbox" name="blue" onChange={handleChange} />
-                </label>
             </div>
 
             {/* MONSTER GRID */}

@@ -8,6 +8,9 @@ function MonsterHorde({ horde, setHorde }) {
   const navigate = useNavigate();
   const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
   const [removeItemConfirm, setRemoveItemConfirm] = useState(null);
+  const [removeAmountConfirm, setRemoveAmountConfirm] = useState(null);
+  // { index, amount }
+  const [removeAmounts, setRemoveAmounts] = useState({});
   // will hold { index, item }
   const total = horde.reduce((sum, m) => sum + m.price * m.quantity, 0);
 
@@ -19,21 +22,6 @@ function MonsterHorde({ horde, setHorde }) {
     if (arr.length === 1) return arr[0];
     if (arr.length === 2) return arr.join(" and ");
     return arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
-  };
-
-  //Remove one item
-  const removeOne = (index) => {
-    setHorde(prev => {
-      const updated = [...prev];
-
-      if (updated[index].quantity > 1) {
-        updated[index].quantity -= 1;
-      } else {
-        updated.splice(index, 1);
-      }
-
-      return updated;
-    });
   };
 
   //ENTER confirms removal of items
@@ -55,6 +43,34 @@ function MonsterHorde({ horde, setHorde }) {
     }
   }, [removeItemConfirm]);
 
+  const handleQuantityChange = (index, value) => {
+    const num = parseInt(value, 10);
+
+    setHorde(prev => {
+      const updated = [...prev];
+
+      if (isNaN(num)) {
+        updated[index].quantity = "";
+      } else {
+        updated[index].quantity = Math.max(1, num);
+      }
+
+      return updated;
+    });
+  };
+
+  const handleQuantityBlur = (index) => {
+    setHorde(prev => {
+      const updated = [...prev];
+
+      if (!updated[index].quantity || updated[index].quantity < 1) {
+        updated[index].quantity = 1;
+      }
+
+      return updated;
+    });
+  };
+
   return (
     <div style={{ textAlign: "center" }}>
       <h1>Your Monster Horde</h1>
@@ -64,10 +80,16 @@ function MonsterHorde({ horde, setHorde }) {
           <p>
             {m.quantity} x {formatList(m.colors)} {pluralizeMonster(m.monster, m.quantity)} — {m.price * m.quantity}€
           </p>
-          <button onClick={() => removeOne(i)}
-            className={styles.quantityButton}>
-            -1
-          </button>
+
+          <input
+            type="number"
+            min="1"
+            value={m.quantity}
+            onChange={(e) => handleQuantityChange(i, e.target.value)}
+            onBlur={() => handleQuantityBlur(i)}
+            style={{ width: "60px", margin: "0 10px" }}
+          />
+
           <button
             onClick={() =>
               setRemoveItemConfirm({ index: i, item: m })
@@ -97,7 +119,9 @@ function MonsterHorde({ horde, setHorde }) {
           </button>
         </>
       )}
-      <Modal /*Modal for clearing everything*/
+
+      {/*Modal for clearing everything*/}
+      <Modal
         isOpen={clearConfirmOpen}
         onClose={() => setClearConfirmOpen(false)}
       >
@@ -122,6 +146,8 @@ function MonsterHorde({ horde, setHorde }) {
           Cancel
         </button>
       </Modal>
+
+      {/*Remove all modal*/}
       <Modal
         isOpen={!!removeItemConfirm}
         onClose={() => setRemoveItemConfirm(null)}

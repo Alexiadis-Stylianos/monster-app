@@ -347,26 +347,35 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased }) {
           className={styles.mybutton}>
           Pay Now
         </button>
-        <Modal isOpen={confirmOpen} onClose={() => setConfirmOpen(false)}>
-          <h2>Confirm Purchase</h2>
-          <p>Are you sure you want to hire these monsters?</p>
 
-          <button
-            ref={confirmButtonRef}
-            onClick={handleConfirmPayment}
-            className={styles.mybutton}
-            style={{ backgroundColor: "green" }}
-          >
-            Yes, Pay
-          </button>
+        <Modal
+          isOpen={confirmOpen}
+          onClose={() => setConfirmOpen(false)}
+          onConfirm={handleConfirmPayment}
+        >
+          {({ selected }) => (
+            <>
+              <h2>Confirm Purchase</h2>
+              <p>Are you sure you want to hire these monsters?</p>
 
-          <button
-            onClick={() => setConfirmOpen(false)}
-            className={styles.mybutton}
-            style={{ backgroundColor: "#777" }}
-          >
-            Cancel
-          </button>
+              <button
+                className={`${styles.mybutton} ${selected === "confirm" ? styles.modalSelected : ""
+                  }`}
+                style={{ backgroundColor: "green" }}
+              >
+                Yes, Pay
+              </button>
+
+              <button
+                onClick={() => setConfirmOpen(false)}
+                className={`${styles.mybutton} ${selected === "cancel" ? styles.modalSelected : ""
+                  }`}
+                style={{ backgroundColor: "#777" }}
+              >
+                Cancel
+              </button>
+            </>
+          )}
         </Modal>
 
       </form>

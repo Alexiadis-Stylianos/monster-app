@@ -7,10 +7,8 @@ import { pluralizeMonster } from "./monsterPlurals";
 function MonsterHorde({ horde, setHorde }) {
   const navigate = useNavigate();
   const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
-  const [removeItemConfirm, setRemoveItemConfirm] = useState(null);
   const [removeAmountConfirm, setRemoveAmountConfirm] = useState(null);
   // { index, amount }
-  const [removeAmounts, setRemoveAmounts] = useState({});
   // will hold { index, item }
   const total = horde.reduce((sum, m) => sum + m.price * m.quantity, 0);
 
@@ -23,25 +21,6 @@ function MonsterHorde({ horde, setHorde }) {
     if (arr.length === 2) return arr.join(" and ");
     return arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
   };
-
-  //ENTER confirms removal of items
-  const clearConfirmRef = useRef(null);
-  const removeConfirmRef = useRef(null);
-  useEffect(() => {
-    if (clearConfirmOpen) {
-      setTimeout(() => {
-        clearConfirmRef.current?.focus();
-      }, 0);
-    }
-  }, [clearConfirmOpen]);
-
-  useEffect(() => {
-    if (removeItemConfirm) {
-      setTimeout(() => {
-        removeConfirmRef.current?.focus();
-      }, 0);
-    }
-  }, [removeItemConfirm]);
 
   const handleQuantityChange = (index, value) => {
     const num = parseInt(value, 10);
@@ -92,12 +71,15 @@ function MonsterHorde({ horde, setHorde }) {
 
           <button
             onClick={() =>
-              setRemoveItemConfirm({ index: i, item: m })
+              setRemoveAmountConfirm({
+                index: i,
+                amount: m.quantity // default = remove all
+              })
             }
             style={{ marginLeft: "5px" }}
             className={styles.mybutton}
           >
-            Remove All
+            Remove
           </button>
         </div>
       ))}
@@ -124,69 +106,97 @@ function MonsterHorde({ horde, setHorde }) {
       <Modal
         isOpen={clearConfirmOpen}
         onClose={() => setClearConfirmOpen(false)}
+        onConfirm={() => {
+          setHorde([]);
+          setClearConfirmOpen(false);
+        }}
       >
-        <h2>⚠️ Clear Entire Horde?</h2>
-        <p>This will remove ALL monsters from your Horde.</p>
-        <button
-          ref={clearConfirmRef}
-          onClick={() => {
-            setHorde([]);
-            setClearConfirmOpen(false);
-          }}
-          className={styles.mybutton}
-          style={{ backgroundColor: "crimson" }}
-        >
-          Yes, Clear All
-        </button>
-        <button
-          onClick={() => setClearConfirmOpen(false)}
-          className={styles.mybutton}
-          style={{ backgroundColor: "#777" }}
-        >
-          Cancel
-        </button>
-      </Modal>
-
-      {/*Remove all modal*/}
-      <Modal
-        isOpen={!!removeItemConfirm}
-        onClose={() => setRemoveItemConfirm(null)}
-      >
-        {removeItemConfirm && (
+        {({ selected }) => (
           <>
-            <h2>⚠️ Remove Selection?</h2>
-            <p>
-              This will remove{" "}
-              <strong>
-                {removeItemConfirm.item.quantity}{" "}
-                {formatList(removeItemConfirm.item.colors)}{" "}
-                {pluralizeMonster(removeItemConfirm.item.monster, removeItemConfirm.item.quantity)}
-              </strong>{" "}
-              from your Horde.
-            </p>
+            <h2>⚠️ Clear Entire Horde?</h2>
+            <p>This will remove ALL monsters from your Horde.</p>
 
             <button
-              ref={removeConfirmRef}
-              onClick={() => {
-                setHorde(prev =>
-                  prev.filter((_, i) => i !== removeItemConfirm.index)
-                );
-                setRemoveItemConfirm(null);
-              }}
-              className={styles.mybutton}
+              className={`${styles.mybutton} ${selected === "confirm" ? styles.modalSelected : ""
+                }`}
               style={{ backgroundColor: "crimson" }}
             >
-              Yes, Remove All
+              Yes, Clear All
             </button>
+
             <button
-              onClick={() => setRemoveItemConfirm(null)}
-              className={styles.mybutton}
+              onClick={() => setClearConfirmOpen(false)}
+              className={`${styles.mybutton} ${selected === "cancel" ? styles.modalSelected : ""
+                }`}
               style={{ backgroundColor: "#777" }}
             >
               Cancel
             </button>
           </>
         )}
+      </Modal>
+
+      {/*Remove all modal*/}
+      <Modal
+        isOpen={!!removeAmountConfirm}
+        onClose={() => setRemoveAmountConfirm(null)}
+        onConfirm={() => {
+          const { index, amount } = removeAmountConfirm;
+
+          setHorde(prev => {
+            const updated = [...prev];
+
+            const safeAmount = Math.min(
+              amount,
+              updated[index].quantity
+            );
+
+            if (updated[index].quantity > safeAmount) {
+              updated[index].quantity -= safeAmount;
+            } else {
+              updated.splice(index, 1);
+            }
+
+            return updated;
+          });
+
+          setRemoveAmountConfirm(null);
+        }}
+      >
+        {({ selected }) => {
+          if (!removeAmountConfirm) return null;
+
+          const { index, amount } = removeAmountConfirm;
+          const item = horde[index];
+
+          return (
+            <>
+              <h2>Confirm Removal</h2>
+              <p>
+                Remove <strong>{amount}</strong>{" "}
+                {formatList(item.colors)}{" "}
+                {pluralizeMonster(item.monster, amount)}?
+              </p>
+
+              <button
+                className={`${styles.mybutton} ${selected === "confirm" ? styles.modalSelected : ""
+                  }`}
+                style={{ backgroundColor: "crimson" }}
+              >
+                Yes, Remove
+              </button>
+
+              <button
+                onClick={() => setRemoveAmountConfirm(null)}
+                className={`${styles.mybutton} ${selected === "cancel" ? styles.modalSelected : ""
+                  }`}
+                style={{ backgroundColor: "#777", marginLeft: "10px" }}
+              >
+                Cancel
+              </button>
+            </>
+          );
+        }}
       </Modal>
     </div>
   );

@@ -34,7 +34,7 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
         setConfirmOpen(false);
     };
 
-    const { register, play} = useSound();
+    const { register, play } = useSound();
 
     const screamAudio = useRef(new Audio(scream));
 
@@ -151,25 +151,34 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
                 Exorcism (Free)
             </button>
 
-            <Modal isOpen={confirmOpen} onClose={() => setConfirmOpen(false)}/*Modal for exorcism*/>
-                <h2>⚠️ Exorcism Ritual</h2>
-                <p>This will banish all monsters.</p>
+            <Modal
+                isOpen={confirmOpen}
+                onClose={() => setConfirmOpen(false)}
+                onConfirm={handleExorcism}
+            >
+                {({ selected }) => (
+                    <>
+                        <h2>Exorcism Ritual</h2>
+                        <p>This will banish all monsters.</p>
 
-                <button
-                    className={styles.mybutton}
-                    style={{ backgroundColor: "crimson" }}
-                    onClick={handleExorcism}
-                >
-                    Yes, Exorcise
-                </button>
+                        <button
+                            className={`${styles.mybutton} ${selected === "confirm" ? styles.modalSelected : ""
+                                }`}
+                            style={{ backgroundColor: "crimson" }}
+                        >
+                            Yes, Exorcise
+                        </button>
 
-                <button
-                    className={styles.mybutton}
-                    style={{ backgroundColor: "#777" }}
-                    onClick={() => setConfirmOpen(false)}
-                >
-                    Cancel
-                </button>
+                        <button
+                            onClick={() => setConfirmOpen(false)}
+                            className={`${styles.mybutton} ${selected === "cancel" ? styles.modalSelected : ""
+                                }`}
+                            style={{ backgroundColor: "#777" }}
+                        >
+                            Cancel
+                        </button>
+                    </>
+                )}
             </Modal>
 
             {/* HOLY EFFECT */}

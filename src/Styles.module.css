@@ -24,7 +24,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 2000;
 }
 
 .modalSelected {
@@ -130,6 +130,16 @@
 }
 
 .categoryActive {
+  background-color: crimson;
+  color: white;
+}
+
+:global(body.light) .categoryActive{
+  background-color: crimson;
+  color: white;
+}
+
+:global(body.dark) .categoryActive{
   background-color: crimson;
   color: white;
 }

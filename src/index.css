@@ -54,6 +54,7 @@ body.dark nav a:hover {
   position: fixed;
   bottom: 20px;
   right: 20px;
+  z-index: 1500;
   border-radius: 50%;
   padding: 10px 12px;
   font-size: 1.2rem;

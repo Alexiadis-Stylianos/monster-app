@@ -6,7 +6,7 @@ import { pluralizeMonster } from "./monsterPlurals";
 import mastercard from './Mastercard.png';
 import visa from './Visa.png';
 
-function Checkout({ setToastMessage, horde, setHorde, setPurchased }) {
+function Checkout({ setToastMessage, horde, setHorde, setPurchased, user }) {
   const navigate = useNavigate();
 
   const total = horde.reduce(
@@ -170,9 +170,30 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased }) {
   const handleConfirmPayment = () => {
     setConfirmOpen(false);
 
+    const order = {
+      id: Date.now(),
+      date: new Date().toLocaleString(),
+      items: horde,
+      total
+    };
+
+    // Get existing orders for this user
+    const existingOrders =
+      JSON.parse(localStorage.getItem(`orders_${user.email}`)) || [];
+
+    // Save updated orders
+    localStorage.setItem(
+      `orders_${user.email}`,
+      JSON.stringify([...existingOrders, order])
+    );
+
     setPurchased(true);
     setToastMessage("Payment successful!");
+
+    // Clear horde for this user
+    localStorage.removeItem(`horde_${user.email}`);
     setHorde([]);
+
     navigate("/");
   };
 
@@ -217,6 +238,11 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased }) {
 
       <form onSubmit={(e) => {
         e.preventDefault();
+        // in case someone bypasses navigation
+        if (!user) {
+          setToastMessage("You must be logged in to pay");
+          return;
+        }
 
         if (!validate()) return;
 
@@ -359,6 +385,7 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased }) {
               <p>Are you sure you want to hire these monsters?</p>
 
               <button
+                onClick={handleConfirmPayment}
                 className={`${styles.mybutton} ${selected === "confirm" ? styles.modalSelected : ""
                   }`}
                 style={{ backgroundColor: "green" }}

@@ -24,7 +24,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2000;
+  z-index: 1800;
 }
 
 .modalSelected {
@@ -77,6 +77,7 @@
   cursor: pointer;
   background-color: orange;
   color: black;
+  font-weight: 500;
 }
 
 .quantityInputField {
@@ -134,12 +135,12 @@
   color: white;
 }
 
-:global(body.light) .categoryActive{
+:global(body.light) .categoryActive {
   background-color: crimson;
   color: white;
 }
 
-:global(body.dark) .categoryActive{
+:global(body.dark) .categoryActive {
   background-color: crimson;
   color: white;
 }
@@ -345,7 +346,7 @@
   border-radius: 6px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   animation: fadeIn 0.3s ease;
-  z-index: 1000;
+  z-index: 2000;
 }
 
 @keyframes fadeIn {
@@ -410,4 +411,76 @@
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 10px;
+}
+
+/*Auth styles*/
+.authContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1500;
+}
+
+/* Dropdown container */
+.dropdown {
+  position: absolute;
+  top: 50px; /* below Account button */
+  right: 0;
+  min-width: 180px;
+
+  background-color: white;
+  border-radius: 10px;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  padding: 8px 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  z-index: 2000;
+
+  /* subtle animation */
+  animation: fadeSlide 0.15s ease-out;
+}
+
+/* Dropdown item buttons */
+.dropdownItem {
+  padding: 10px 16px;
+  background: none;
+  border: none;
+
+  text-align: left;
+  font-size: 14px;
+  cursor: pointer;
+
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+/* Hover effect */
+.dropdownItem:hover {
+  background-color: #f5f5f5;
+  color: #DC143C;
+}
+
+/* Optional: divider */
+.dropdownDivider {
+  height: 1px;
+  background-color: #eee;
+  margin: 6px 0;
+}
+
+/* Animation */
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

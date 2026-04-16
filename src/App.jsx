@@ -7,6 +7,12 @@ import MonsterPics from './MonsterPics.jsx';
 import Checkout from './Checkout';
 import Toast from './Toast';
 import About from './About.jsx';
+import Register from "./Registration.jsx";
+import Login from "./Login";
+import ProtectedRoute from './ProtectedRoute.jsx';
+import OrderHistory from "./OrderHistory";
+import Account from "./Account";
+import AuthSection from './AuthSection.jsx';
 
 const Monster = lazy(() => import('./MonsterForm'))
 
@@ -19,10 +25,21 @@ function App() {
     padding: '5px 10px'
   });
 
-  const [horde, setHorde] = useState(() => {
-    const saved = localStorage.getItem("horde");
-    return saved ? JSON.parse(saved) : [];
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem("currentUser");
+    return saved ? JSON.parse(saved) : null;
   });
+
+  const [horde, setHorde] = useState([]);
+  useEffect(() => {
+    if (!user) {
+      setHorde([]);
+      return;
+    }
+
+    const saved = localStorage.getItem(`horde_${user.email}`);
+    setHorde(saved ? JSON.parse(saved) : []);
+  }, [user]);
 
   const [purchased, setPurchased] = useState(() => {
     const saved = localStorage.getItem("purchased");
@@ -30,8 +47,13 @@ function App() {
   });
 
   useEffect(() => {
-    localStorage.setItem("horde", JSON.stringify(horde));
-  }, [horde]);
+    if (!user) return;
+
+    localStorage.setItem(
+      `horde_${user.email}`,
+      JSON.stringify(horde)
+    );
+  }, [horde, user]);
 
   useEffect(() => {
     localStorage.setItem("purchased", JSON.stringify(purchased));
@@ -64,6 +86,11 @@ function App() {
 
   return (
     <BrowserRouter>
+      <AuthSection
+        user={user}
+        setUser={setUser}
+        setToastMessage={setToastMessage}
+      />
       <button
         className="theme-toggle"
         onClick={() =>
@@ -83,6 +110,18 @@ function App() {
       <div className={styles.appCenter}>
         {toastMessage && <Toast message={toastMessage} />}
         <Routes>
+          <Route
+            path="/account"
+            element={
+              <ProtectedRoute user={user} setToastMessage={setToastMessage}>
+                <Account
+                  user={user}
+                  setUser={setUser}
+                  setToastMessage={setToastMessage}
+                />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/" element={
             <Suspense fallback={<div>Loading options...</div>}>
               <Monster
@@ -97,14 +136,23 @@ function App() {
             <MonsterHorde
               horde={horde}
               setHorde={setHorde}
+              user={user}
             />
           } />
-          <Route path="/checkout" element={<Checkout
-            setToastMessage={setToastMessage}
-            horde={horde}
-            setHorde={setHorde}
-            setPurchased={setPurchased}
-          />} />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute user={user} setToastMessage={setToastMessage}>
+                <Checkout
+                  setToastMessage={setToastMessage}
+                  horde={horde}
+                  setHorde={setHorde}
+                  setPurchased={setPurchased}
+                  user={user}
+                />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/monsterpics" element={<MonsterPics />}>
             <Route path="vampire" element={<Vampire />} />
             <Route path="ghost" element={<Ghost />} />
@@ -121,10 +169,34 @@ function App() {
             <Route path="giantSpider" element={<GiantSpider />} />
             <Route path="direWolf" element={<DireWolf />} />
           </Route>
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute user={user} setToastMessage={setToastMessage}>
+                <OrderHistory user={user} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <Login
+                setUser={setUser}
+                setToastMessage={setToastMessage}
+              />
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <Register
+                setToastMessage={setToastMessage}
+              />
+            }
+          />
         </Routes>
       </div>
     </BrowserRouter>
-
   );
 }
 

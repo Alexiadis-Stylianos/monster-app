@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import styles from "./Styles.module.css";
 import { pluralizeMonster } from "./monsterPlurals";
 
-function MonsterHorde({ horde, setHorde }) {
+function MonsterHorde({ horde, setHorde, user }) {
   const navigate = useNavigate();
   const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
   const [removeAmountConfirm, setRemoveAmountConfirm] = useState(null);
@@ -96,7 +96,8 @@ function MonsterHorde({ horde, setHorde }) {
 
           <button
             onClick={handleCheckout}
-            className={styles.mybutton}>
+            className={styles.mybutton}
+            disabled={!user}>
             Go to Checkout
           </button>
         </>

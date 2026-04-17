@@ -204,6 +204,12 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased, user }) {
   //ENTER button works for payment confirmation
   const confirmButtonRef = useRef(null);
 
+  const formatList = (arr) => {
+    if (arr.length === 1) return arr[0];
+    if (arr.length === 2) return arr.join(" and ");
+    return arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
+  };
+
   useEffect(() => {
     if (confirmOpen) {
       setTimeout(() => {
@@ -224,10 +230,8 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased, user }) {
         <>
           {horde.map((item, index) => (
             <p key={index}>
-              {item.quantity} ×{" "}
-              {item.colors.length > 1
-                ? item.colors.slice(0, -1).join(", ") + " and " + item.colors.at(-1)
-                : item.colors[0]}{" "}
+              {item.quantity} x{" "}
+              {formatList(item.colors)}{" "}
               {pluralizeMonster(item.monster, item.quantity)} —
               {item.price * item.quantity} €
             </p>
@@ -379,13 +383,13 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased, user }) {
           onClose={() => setConfirmOpen(false)}
           onConfirm={handleConfirmPayment}
         >
-          {({ selected }) => (
+          {({ selected, onConfirm }) => (
             <>
               <h2>Confirm Purchase</h2>
               <p>Are you sure you want to hire these monsters?</p>
 
               <button
-                onClick={handleConfirmPayment}
+                onClick={onConfirm}
                 className={`${styles.mybutton} ${selected === "confirm" ? styles.modalSelected : ""
                   }`}
                 style={{ backgroundColor: "green" }}

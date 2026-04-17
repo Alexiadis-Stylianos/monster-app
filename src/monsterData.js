@@ -29,7 +29,7 @@ const monsterData = [
   { id: "troll", name: "Troll", price: 12, category: "Humanoid", image: troll },
 
   { id: "werewolf", name: "Werewolf", price: 20, category: "Beast", image: werewolf },
-  { id: "giantspider", name: "Giant Spider", price: 12, category: "Beast", image: giantSpider },
+  { id: "giant spider", name: "Giant Spider", price: 12, category: "Beast", image: giantSpider },
   { id: "direwolf", name: "Dire Wolf", price: 10, category: "Beast", image: direWolf }
 ];
 

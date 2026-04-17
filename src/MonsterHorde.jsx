@@ -31,7 +31,7 @@ function MonsterHorde({ horde, setHorde, user }) {
       if (isNaN(num)) {
         updated[index].quantity = "";
       } else {
-        updated[index].quantity = Math.max(1, num);
+        updated[index].quantity = Math.max(1, Math.min(99, num));
       }
 
       return updated;
@@ -44,6 +44,10 @@ function MonsterHorde({ horde, setHorde, user }) {
 
       if (!updated[index].quantity || updated[index].quantity < 1) {
         updated[index].quantity = 1;
+      }
+
+      if (updated[index].quantity > 99) {
+        updated[index].quantity = 99;
       }
 
       return updated;

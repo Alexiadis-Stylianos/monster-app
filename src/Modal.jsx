@@ -121,7 +121,7 @@ function Modal({ isOpen, onClose, onConfirm, children }) {
 
         {/*Inject selection state into children */}
         {typeof children === "function"
-          ? children({ selected })
+          ? children({ selected, onConfirm, onClose })
           : children}
       </div>
     </div>,

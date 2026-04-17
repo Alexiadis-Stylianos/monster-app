@@ -125,8 +125,6 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
             {/* MONSTER GRID */}
             <div className={styles.monsterGrid}>
                 {filteredMonsters.map(monster => {
-                    //const quantity = quantities[monster.id] || 1;
-
                     return (
                         <MonsterCard
                             key={monster.id}
@@ -156,12 +154,13 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
                 onClose={() => setConfirmOpen(false)}
                 onConfirm={handleExorcism}
             >
-                {({ selected }) => (
+                {({ selected, onConfirm }) => (
                     <>
                         <h2>Exorcism Ritual</h2>
                         <p>This will banish all monsters.</p>
 
                         <button
+                            onClick={onConfirm}
                             className={`${styles.mybutton} ${selected === "confirm" ? styles.modalSelected : ""
                                 }`}
                             style={{ backgroundColor: "crimson" }}

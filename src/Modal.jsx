@@ -88,8 +88,28 @@ function Modal({ isOpen, onClose, onConfirm, children }) {
       }
     }, 0);
 
+    const handleFocusIn = (e) =>{
+      if (!modalRef.current) return;
+      const buttons = modalRef.current.querySelectorAll("button");
+
+      buttons.forEach((btn)=> {
+        if (btn === e.target) {
+          if (btn.dataset.action === "confirm") {
+            setSelected("confirm");
+            selectedRef.current = "confirm";
+          }else if (btn.dataset.action === "cancel"){
+            setSelected("cancel");
+            selectedRef.current = "cancel";
+          }
+        }
+      });
+    }
+
+    document.addEventListener("focusin", handleFocusIn);
+
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("focusin", handleFocusIn);
       lastFocusedElement.current?.focus();
       setSelected("cancel");
       selectedRef.current = "cancel"; //reset

@@ -116,12 +116,14 @@ function MonsterHorde({ horde, setHorde, user }) {
           setClearConfirmOpen(false);
         }}
       >
-        {({ selected }) => (
+        {({ selected, onClose, onConfirm }) => (
           <>
             <h2>⚠️ Clear Entire Horde?</h2>
             <p>This will remove ALL monsters from your Horde.</p>
 
             <button
+              data-action="confirm"
+              onClick={onConfirm}
               className={`${styles.mybutton} ${selected === "confirm" ? styles.modalSelected : ""
                 }`}
               style={{ backgroundColor: "crimson" }}
@@ -130,7 +132,8 @@ function MonsterHorde({ horde, setHorde, user }) {
             </button>
 
             <button
-              onClick={() => setClearConfirmOpen(false)}
+              data-action="cancel"
+              onClick={onClose}
               className={`${styles.mybutton} ${selected === "cancel" ? styles.modalSelected : ""
                 }`}
               style={{ backgroundColor: "#777" }}
@@ -168,7 +171,7 @@ function MonsterHorde({ horde, setHorde, user }) {
           setRemoveAmountConfirm(null);
         }}
       >
-        {({ selected }) => {
+        {({ selected, onClose, onConfirm }) => {
           if (!removeAmountConfirm) return null;
 
           const { index, amount } = removeAmountConfirm;
@@ -184,6 +187,8 @@ function MonsterHorde({ horde, setHorde, user }) {
               </p>
 
               <button
+                data-action="confirm"
+                onClick={onConfirm}
                 className={`${styles.mybutton} ${selected === "confirm" ? styles.modalSelected : ""
                   }`}
                 style={{ backgroundColor: "crimson" }}
@@ -192,7 +197,8 @@ function MonsterHorde({ horde, setHorde, user }) {
               </button>
 
               <button
-                onClick={() => setRemoveAmountConfirm(null)}
+                data-action="cancel"
+                onClick={onClose}
                 className={`${styles.mybutton} ${selected === "cancel" ? styles.modalSelected : ""
                   }`}
                 style={{ backgroundColor: "#777", marginLeft: "10px" }}

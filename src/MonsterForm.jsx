@@ -16,6 +16,7 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
     const [modalMessage, setModalMessage] = useState("");
     const [holyEffect, setHolyEffect] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("All");
+    const [isFading, setIsFading] = useState(false);
 
     //Exorcism
     const handleExorcism = () => {
@@ -113,7 +114,16 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
                 {categories.map(category => (
                     <button
                         key={category}
-                        onClick={() => setSelectedCategory(category)}
+                        onClick={() => {
+                            if (selectedCategory === category) return;
+
+                            setIsFading(true);
+
+                            setTimeout(() => {
+                                setSelectedCategory(category);
+                                setIsFading(false);
+                            }, 120); // small delay for fade-out
+                        }}
                         className={`${styles.categoryButton} ${selectedCategory === category ? styles.categoryActive : ""
                             }`}
                     >
@@ -123,7 +133,15 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
             </div>
 
             {/* MONSTER GRID */}
-            <div className={styles.monsterGrid}>
+            <div
+                // className={styles.monsterGrid}
+                // style={{
+                //     opacity: isFading ? 0 : 1,
+                //     transition: "opacity 0.15s ease"
+                // }}
+                className={`${styles.monsterGrid} ${isFading ? styles.fadeOut : styles.fadeIn
+                    }`}
+            >
                 {filteredMonsters.map(monster => {
                     return (
                         <MonsterCard
@@ -154,12 +172,13 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
                 onClose={() => setConfirmOpen(false)}
                 onConfirm={handleExorcism}
             >
-                {({ selected, onConfirm }) => (
+                {({ selected, onConfirm, onClose }) => (
                     <>
                         <h2>Exorcism Ritual</h2>
                         <p>This will banish all monsters.</p>
 
                         <button
+                            data-action="confirm"
                             onClick={onConfirm}
                             className={`${styles.mybutton} ${selected === "confirm" ? styles.modalSelected : ""
                                 }`}
@@ -169,7 +188,8 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
                         </button>
 
                         <button
-                            onClick={() => setConfirmOpen(false)}
+                            data-action="cancel"
+                            onClick={onClose}
                             className={`${styles.mybutton} ${selected === "cancel" ? styles.modalSelected : ""
                                 }`}
                             style={{ backgroundColor: "#777" }}

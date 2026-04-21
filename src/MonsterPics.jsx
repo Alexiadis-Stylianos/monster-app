@@ -23,8 +23,8 @@ function MonsterPics() {
         <NavLink to="/monsterpics/goblin" style={navLinkStyles}>Goblin</NavLink> |{" "}
         <NavLink to="/monsterpics/orc" style={navLinkStyles}>Orc</NavLink> |{" "}
         <NavLink to="/monsterpics/troll" style={navLinkStyles}>Troll</NavLink> |{" "}
-        <NavLink to="/monsterpics/werewolf" style={navLinkStyles}>Werewolf</NavLink>{" "}
-        <NavLink to="/monsterpics/giantSpider" style={navLinkStyles}>Giant Spider</NavLink>{" "}
+        <NavLink to="/monsterpics/werewolf" style={navLinkStyles}>Werewolf</NavLink> |{" "}
+        <NavLink to="/monsterpics/giantSpider" style={navLinkStyles}>Giant Spider</NavLink> |{" "}
         <NavLink to="/monsterpics/direWolf" style={navLinkStyles}>Dire Wolf</NavLink>
       </nav>
       <Outlet />

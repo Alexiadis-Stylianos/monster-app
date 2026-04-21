@@ -383,12 +383,13 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased, user }) {
           onClose={() => setConfirmOpen(false)}
           onConfirm={handleConfirmPayment}
         >
-          {({ selected, onConfirm }) => (
+          {({ selected, onConfirm, onClose }) => (
             <>
               <h2>Confirm Purchase</h2>
               <p>Are you sure you want to hire these monsters?</p>
 
               <button
+                data-action="confirm"
                 onClick={onConfirm}
                 className={`${styles.mybutton} ${selected === "confirm" ? styles.modalSelected : ""
                   }`}
@@ -398,7 +399,8 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased, user }) {
               </button>
 
               <button
-                onClick={() => setConfirmOpen(false)}
+                data-action="cancel"
+                onClick={onClose}
                 className={`${styles.mybutton} ${selected === "cancel" ? styles.modalSelected : ""
                   }`}
                 style={{ backgroundColor: "#777" }}

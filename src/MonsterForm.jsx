@@ -17,6 +17,7 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
     const [holyEffect, setHolyEffect] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [isFading, setIsFading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     //Exorcism
     const handleExorcism = () => {
@@ -103,7 +104,23 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
         if (!exists && filteredMonsters.length > 0) {
             setSelectedMonster(filteredMonsters[0].id);
         }
-    }, [selectedCategory]);
+    }, [filteredMonsters]);
+
+    const handleCategoryChange = (category) => {
+        if (selectedCategory === category) return;
+
+        setIsFading(true);
+
+        setTimeout(() => {
+            setLoading(true);
+            setSelectedCategory(category);
+            setIsFading(false);
+
+            setTimeout(() => {
+                setLoading(false);
+            }, 350); // skeleton duration
+        }, 200); // fade out duration
+    };
 
     return (
         <div className={styles.shopContainer}>
@@ -114,16 +131,7 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
                 {categories.map(category => (
                     <button
                         key={category}
-                        onClick={() => {
-                            if (selectedCategory === category) return;
-
-                            setIsFading(true);
-
-                            setTimeout(() => {
-                                setSelectedCategory(category);
-                                setIsFading(false);
-                            }, 120); // small delay for fade-out
-                        }}
+                        onClick={()=> handleCategoryChange(category)}
                         className={`${styles.categoryButton} ${selectedCategory === category ? styles.categoryActive : ""
                             }`}
                     >
@@ -134,23 +142,25 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
 
             {/* MONSTER GRID */}
             <div
-                // className={styles.monsterGrid}
-                // style={{
-                //     opacity: isFading ? 0 : 1,
-                //     transition: "opacity 0.15s ease"
-                // }}
                 className={`${styles.monsterGrid} ${isFading ? styles.fadeOut : styles.fadeIn
                     }`}
             >
-                {filteredMonsters.map(monster => {
-                    return (
+                {loading
+                    ? Array.from({ length: 10 }).map((_, i) => (
+                        <div key={i} className={styles.skeletonCard}>
+                            <div className={styles.skeletonImage}></div>
+                            <div className={styles.skeletonLine}></div>
+                            <div className={styles.skeletonLine}></div>
+                            <div className={styles.skeletonLineSmall}></div>
+                        </div>
+                    ))
+                    : filteredMonsters.map(monster => (
                         <MonsterCard
                             key={monster.id}
                             monster={monster}
                             onAdd={handleAddToHorde}
                         />
-                    );
-                })}
+                    ))}
             </div>
 
             {/* MODALS */}

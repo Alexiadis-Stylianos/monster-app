@@ -1,35 +1,38 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import Modal from "./Modal";
 import styles from "./Styles.module.css";
 import scream from './assets/sounds/scream.wav';
 import exorcism from './assets/sounds/exorcism.wav';
-import { useSound } from "./SoundContext";
+import { useSound } from "./context/SoundContext";
 import CalculatePrice from "./CalculatePrice";
-import { pluralizeMonster } from "./monsterPlurals";
-import monsterData from "./monsterData";
+import { pluralizeMonster } from "./utils/monsterPlurals";
+import monsterData from "./data/monsterData";
 import MonsterCard from "./MonsterCard";
+import { formatList } from "./utils/formatList";
+import { useAudio } from "./hooks/useAudio";
+import { MAX_QUANTITY } from "./utils/constants";
+import { useToast } from "./hooks/useToast";
 
-function MonsterForm({ setHorde, purchased, setPurchased }) {
-    const [selectedMonster, setSelectedMonster] = useState("ghost");
+function MonsterForm({ setHorde, horde, purchased, setPurchased }) {
     const [confirmOpen, setConfirmOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState("");
-    const [holyEffect, setHolyEffect] = useState(false);
+    const [holyEffectKey, setHolyEffectKey] = useState(0);
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [isFading, setIsFading] = useState(false);
     const [loading, setLoading] = useState(false);
+    const { addToast } = useToast();
 
     //Exorcism
     const handleExorcism = () => {
         play(exorcismAudio.current);
 
-        setHolyEffect(true);
+        setHolyEffectKey(prev => prev + 1);
 
         //Clear everyting and holy lights
         setTimeout(() => {
             setHorde([]);
             setPurchased(false);
-            setInputs({});
             setHolyEffect(false);
         }, 2000); // effect duration
 
@@ -38,21 +41,8 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
 
     const { register, play } = useSound();
 
-    const screamAudio = useRef(new Audio(scream));
-
-    const exorcismAudio = useRef(new Audio(exorcism));
-
-    useEffect(() => {
-        register(screamAudio.current);
-        register(exorcismAudio.current);
-    }, [register]);
-
-    //formatting
-    const formatList = (arr) => {
-        if (arr.length === 1) return arr[0];
-        if (arr.length === 2) return arr.join(" and ");
-        return arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
-    };
+    const screamAudio = useAudio(scream);
+    const exorcismAudio = useAudio(exorcism);
 
     // ADD TO HORDE
     const handleAddToHorde = (monster, quantity, colors) => {
@@ -60,51 +50,85 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
 
         play(screamAudio.current);
 
-        setHorde(prev => {
-            const existingIndex = prev.findIndex(
-                m =>
-                    m.monster === monster.id &&
-                    JSON.stringify(m.colors.sort()) === JSON.stringify(colors.sort())
-            );
+        let toastMessage = "";
 
+        setHorde(prev => {
+            const existingIndex = prev.findIndex(m => {
+                const sameMonster = m.monster === monster.id;
+
+                const sortedA = [...m.colors].sort();
+                const sortedB = [...colors].sort();
+
+                const sameColors =
+                    JSON.stringify(sortedA) === JSON.stringify(sortedB);
+
+                return sameMonster && sameColors;
+            });
+
+            // MONSTER ALREADY EXISTS
             if (existingIndex !== -1) {
-                // Increase quantity if already exists
                 const updated = [...prev];
-                updated[existingIndex].quantity += quantity;
+
+                const currentQty = updated[existingIndex].quantity;
+
+                const newQty = Math.min(
+                    currentQty + quantity,
+                    MAX_QUANTITY
+                );
+
+                updated[existingIndex].quantity = newQty;
+
+                const addedAmount = newQty - currentQty;
+
+                toastMessage =
+                    addedAmount > 0
+                        ? `${addedAmount} x ${formatList(colors)} ${pluralizeMonster(
+                            monster.name,
+                            addedAmount
+                        )} added (${MAX_QUANTITY - newQty} slots left)`
+                        : `Maximum (${MAX_QUANTITY}) reached for ${formatList(
+                            colors
+                        )} ${pluralizeMonster(
+                            monster.name,
+                            MAX_QUANTITY
+                        )}`;
+
                 return updated;
             }
 
-            // Otherwise add new entry
+            // NEW MONSTER ENTRY
+            const safeQuantity = Math.min(quantity, MAX_QUANTITY);
+
+            toastMessage = `${safeQuantity} x ${formatList(
+                colors
+            )} ${pluralizeMonster(
+                monster.name,
+                safeQuantity
+            )} added (${price * safeQuantity}€)`;
+
             return [
                 ...prev,
                 {
                     monster: monster.id,
                     colors,
                     price,
-                    quantity
+                    quantity: safeQuantity
                 }
             ];
         });
 
-        setModalMessage(
-            `${quantity} x ${formatList(colors)} ${pluralizeMonster(monster.name, quantity)} added (${price * quantity}€)`
-        );
-
-        setModalOpen(true);
+        setTimeout(() => {
+            addToast(toastMessage);
+        }, 0);
     };
 
     //Category filter
-    const categories = ["All", ...new Set(monsterData.map(m => m.category))];
+    const categories = useMemo(() =>
+        ["All", ...new Set(monsterData.map(m => m.category))],
+        []);
     const filteredMonsters = monsterData.filter(monster =>
         selectedCategory === "All" || monster.category === selectedCategory
     );
-    useEffect(() => {
-        const exists = filteredMonsters.find(m => m.id === selectedMonster);
-
-        if (!exists && filteredMonsters.length > 0) {
-            setSelectedMonster(filteredMonsters[0].id);
-        }
-    }, [filteredMonsters]);
 
     const handleCategoryChange = (category) => {
         if (selectedCategory === category) return;
@@ -131,7 +155,7 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
                 {categories.map(category => (
                     <button
                         key={category}
-                        onClick={()=> handleCategoryChange(category)}
+                        onClick={() => handleCategoryChange(category)}
                         className={`${styles.categoryButton} ${selectedCategory === category ? styles.categoryActive : ""
                             }`}
                     >
@@ -158,6 +182,7 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
                         <MonsterCard
                             key={monster.id}
                             monster={monster}
+                            horde={horde}
                             onAdd={handleAddToHorde}
                         />
                     ))}
@@ -202,7 +227,7 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
                             onClick={onClose}
                             className={`${styles.mybutton} ${selected === "cancel" ? styles.modalSelected : ""
                                 }`}
-                            style={{ backgroundColor: "#777" }}
+                            style={{ backgroundColor: "#777", marginLeft: "10px" }}
                         >
                             Cancel
                         </button>
@@ -211,8 +236,10 @@ function MonsterForm({ setHorde, purchased, setPurchased }) {
             </Modal>
 
             {/* HOLY EFFECT */}
-            {holyEffect && (
-                <div className={styles.holyContainer}>
+            {holyEffectKey > 0 && (
+                <div
+                    key={holyEffectKey}
+                    className={styles.holyContainer}>
                     {Array.from({ length: 75 }).map((_, i) => (
                         <span
                             key={i}

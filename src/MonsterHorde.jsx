@@ -2,24 +2,19 @@ import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import { useState, useRef, useEffect } from "react";
 import styles from "./Styles.module.css";
-import { pluralizeMonster } from "./monsterPlurals";
+import { pluralizeMonster } from "./utils/monsterPlurals";
+import { formatList } from "./utils/formatList";
+import { calculateHordeTotal } from "./utils/hordeUtils";
+import { MAX_QUANTITY } from "./utils/constants";
 
 function MonsterHorde({ horde, setHorde, user }) {
   const navigate = useNavigate();
   const [clearConfirmOpen, setClearConfirmOpen] = useState(false);
   const [removeAmountConfirm, setRemoveAmountConfirm] = useState(null);
-  // { index, amount }
-  // will hold { index, item }
-  const total = horde.reduce((sum, m) => sum + m.price * m.quantity, 0);
+  const total = calculateHordeTotal(horde);
 
   const handleCheckout = () => {
     navigate("/checkout");
-  };
-
-  const formatList = (arr) => {
-    if (arr.length === 1) return arr[0];
-    if (arr.length === 2) return arr.join(" and ");
-    return arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
   };
 
   const handleQuantityChange = (index, value) => {
@@ -31,7 +26,7 @@ function MonsterHorde({ horde, setHorde, user }) {
       if (isNaN(num)) {
         updated[index].quantity = "";
       } else {
-        updated[index].quantity = Math.max(1, Math.min(99, num));
+        updated[index].quantity = Math.max(1, Math.min(MAX_QUANTITY, num));
       }
 
       return updated;
@@ -46,8 +41,8 @@ function MonsterHorde({ horde, setHorde, user }) {
         updated[index].quantity = 1;
       }
 
-      if (updated[index].quantity > 99) {
-        updated[index].quantity = 99;
+      if (updated[index].quantity > MAX_QUANTITY) {
+        updated[index].quantity = MAX_QUANTITY;
       }
 
       return updated;
@@ -93,8 +88,10 @@ function MonsterHorde({ horde, setHorde, user }) {
       {horde.length > 0 && (
         <>
           <button
-            onClick={() => setClearConfirmOpen(true)} style={{ marginRight: "10px" }}
-            className={styles.mybutton}>
+            onClick={() => setClearConfirmOpen(true)}
+            style={{ marginRight: "10px" }}
+            className={styles.mybutton}
+            >
             Clear All
           </button>
 
@@ -118,7 +115,7 @@ function MonsterHorde({ horde, setHorde, user }) {
       >
         {({ selected, onClose, onConfirm }) => (
           <>
-            <h2>⚠️ Clear Entire Horde?</h2>
+            <h2>Clear Entire Horde?</h2>
             <p>This will remove ALL monsters from your Horde.</p>
 
             <button
@@ -136,7 +133,7 @@ function MonsterHorde({ horde, setHorde, user }) {
               onClick={onClose}
               className={`${styles.mybutton} ${selected === "cancel" ? styles.modalSelected : ""
                 }`}
-              style={{ backgroundColor: "#777" }}
+              style={{ backgroundColor: "#777", marginLeft: "10px" }}
             >
               Cancel
             </button>

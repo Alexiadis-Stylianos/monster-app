@@ -2,10 +2,9 @@ import { Suspense, lazy, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import MonsterHorde from "./MonsterHorde";
 import styles from "./Styles.module.css";
-import { Vampire, Zombie, Ghost, Ghoul, Lich, Imp, Succubus, Hellhound, Goblin, Orc, Troll, Werewolf, GiantSpider, DireWolf } from './Monsters';
+import MonsterPage from './MonsterPage.jsx';
 import MonsterPics from './MonsterPics.jsx';
 import Checkout from './Checkout';
-import Toast from './Toast';
 import About from './About.jsx';
 import Register from "./Registration.jsx";
 import Login from "./Login";
@@ -63,18 +62,6 @@ function App() {
     (sum, item) => sum + item.quantity,
     0
   );
-  //Toast message
-  const [toastMessage, setToastMessage] = useState("");
-
-  useEffect(() => {
-    if (!toastMessage) return;
-
-    const timer = setTimeout(() => {
-      setToastMessage("");
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [toastMessage]);
 
   //Dark Mode
   const [theme, setTheme] = useState("light");
@@ -89,7 +76,6 @@ function App() {
       <AuthSection
         user={user}
         setUser={setUser}
-        setToastMessage={setToastMessage}
       />
       <button
         className="theme-toggle"
@@ -108,16 +94,16 @@ function App() {
         <NavLink to="/monsterpics" style={navLinkStyles}>Products</NavLink>
       </nav>
       <div className={styles.appCenter}>
-        {toastMessage && <Toast message={toastMessage} />}
         <Routes>
           <Route
             path="/account"
             element={
-              <ProtectedRoute user={user} setToastMessage={setToastMessage}>
+              <ProtectedRoute 
+              user={user} 
+              >
                 <Account
                   user={user}
                   setUser={setUser}
-                  setToastMessage={setToastMessage}
                 />
               </ProtectedRoute>
             }
@@ -126,6 +112,7 @@ function App() {
             <Suspense fallback={<div>Loading options...</div>}>
               <Monster
                 setHorde={setHorde}
+                horde={horde}
                 purchased={purchased}
                 setPurchased={setPurchased}
               />
@@ -142,9 +129,10 @@ function App() {
           <Route
             path="/checkout"
             element={
-              <ProtectedRoute user={user} setToastMessage={setToastMessage}>
+              <ProtectedRoute 
+              user={user} 
+              >
                 <Checkout
-                  setToastMessage={setToastMessage}
                   horde={horde}
                   setHorde={setHorde}
                   setPurchased={setPurchased}
@@ -154,25 +142,14 @@ function App() {
             }
           />
           <Route path="/monsterpics" element={<MonsterPics />}>
-            <Route path="vampire" element={<Vampire />} />
-            <Route path="ghost" element={<Ghost />} />
-            <Route path="zombie" element={<Zombie />} />
-            <Route path="ghoul" element={<Ghoul />} />
-            <Route path="lich" element={<Lich />} />
-            <Route path="imp" element={<Imp />} />
-            <Route path="succubus" element={<Succubus />} />
-            <Route path="hellhound" element={<Hellhound />} />
-            <Route path="goblin" element={<Goblin />} />
-            <Route path="orc" element={<Orc />} />
-            <Route path="troll" element={<Troll />} />
-            <Route path="werewolf" element={<Werewolf />} />
-            <Route path="giantSpider" element={<GiantSpider />} />
-            <Route path="direWolf" element={<DireWolf />} />
+            <Route path=":type" element={<MonsterPage />} />
           </Route>
           <Route
             path="/orders"
             element={
-              <ProtectedRoute user={user} setToastMessage={setToastMessage}>
+              <ProtectedRoute 
+              user={user} 
+              >
                 <OrderHistory user={user} />
               </ProtectedRoute>
             }
@@ -182,7 +159,6 @@ function App() {
             element={
               <Login
                 setUser={setUser}
-                setToastMessage={setToastMessage}
               />
             }
           />
@@ -190,7 +166,6 @@ function App() {
             path="/register"
             element={
               <Register
-                setToastMessage={setToastMessage}
               />
             }
           />

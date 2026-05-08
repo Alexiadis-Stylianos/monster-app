@@ -1,10 +1,12 @@
 import { Navigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useToast } from "./hooks/useToast";
 
-function ProtectedRoute({ user, children, setToastMessage }) {
+function ProtectedRoute({ user, children }) {
+    const { addToast } = useToast();
     useEffect(() => {
         if (!user) {
-            setToastMessage?.("Please login first");
+            addToast("Please login first");
         }
     }, [user]);
 

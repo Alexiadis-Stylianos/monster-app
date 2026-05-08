@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styles from "./Styles.module.css";
+import { findUserByEmail, addUser } from "./utils/auth";
+import { useToast } from "./hooks/useToast";
 
-function Register({ setToastMessage }) {
+function Register() {
     const {
         register,
         handleSubmit,
@@ -10,14 +12,13 @@ function Register({ setToastMessage }) {
     } = useForm();
 
     const navigate = useNavigate();
+    const { addToast } = useToast();
 
     const onSubmit = (data) => {
-        const users = JSON.parse(localStorage.getItem("users")) || [];
-
-        const existingUser = users.find(user => user.email === data.email);
+        const existingUser = findUserByEmail(data.email);
 
         if (existingUser) {
-            setToastMessage("Email already registered");
+            addToast("Email already registered");
             return;
         }
 
@@ -27,9 +28,8 @@ function Register({ setToastMessage }) {
             password: data.password
         };
 
-        localStorage.setItem("users", JSON.stringify([...users, newUser]));
-
-        setToastMessage("Registration successful! Please log in.");
+        addUser(newUser);
+        addToast("Registration successful. Please log in.");
         navigate("/login");
     };
 
@@ -80,7 +80,7 @@ function Register({ setToastMessage }) {
                 className={styles.mybutton}>
                 Register
             </button>
-            
+
         </form>
     );
 }

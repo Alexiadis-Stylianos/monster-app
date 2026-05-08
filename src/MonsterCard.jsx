@@ -1,12 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import styles from "./Styles.module.css";
 import growl from './assets/sounds/growl.wav';
-import { useSound } from "./SoundContext";
+import { useSound } from "./context/SoundContext";
+import { useAudio } from "./hooks/useAudio";
 import CalculatePrice from "./CalculatePrice";
+import { MAX_QUANTITY } from "./utils/constants";
 
-function MonsterCard({ monster, onAdd }) {
+function MonsterCard({ monster, horde, onAdd }) {
     const [quantity, setQuantity] = useState(1);
-    const growlAudio = useRef(new Audio(growl));
+    const growlAudio = useAudio(growl);
     const { register, play, stop } = useSound();
 
     //Hover features
@@ -18,10 +20,6 @@ function MonsterCard({ monster, onAdd }) {
     const handleHoverLeave = () => {
         stop(growlAudio.current);
     }
-
-    useEffect(() => {
-        register(growlAudio.current);
-    }, [register]);
 
     //Handle colors
     const [colors, setColors] = useState({
@@ -65,8 +63,8 @@ function MonsterCard({ monster, onAdd }) {
             return;
         }
 
-        if (num > 99) {
-            setQuantity(99);
+        if (num > MAX_QUANTITY) {
+            setQuantity(MAX_QUANTITY);
             return;
         }
 
@@ -74,6 +72,18 @@ function MonsterCard({ monster, onAdd }) {
     };
 
     const selectedColors = getSelectedColors();
+    const existingItem = horde.find(m => {
+        const sameMonster = m.monster === monster.id;
+
+        const sortedA = [...m.colors].sort();
+        const sortedB = [...selectedColors].sort();
+
+        return sameMonster && JSON.stringify(sortedA) === JSON.stringify(sortedB);
+    });
+
+    const currentQty = existingItem ? existingItem.quantity : 0;
+
+    const isMaxReached = currentQty >= MAX_QUANTITY;
     const unitPrice = CalculatePrice(monster.id, selectedColors);
     const totalPrice = unitPrice * (quantity || 1);
 
@@ -140,7 +150,7 @@ function MonsterCard({ monster, onAdd }) {
                 <input
                     type="number"
                     min="1"
-                    max="99"
+                    max="MAX_QUANTITY"
                     value={quantity}
                     onChange={(e) => handleInputChange(e.target.value)}
                     className={styles.quantityInputField}
@@ -152,8 +162,9 @@ function MonsterCard({ monster, onAdd }) {
                 onMouseEnter={handleHoverEnter}
                 onMouseLeave={handleHoverLeave}
                 onClick={handleAddClick}
+                disabled={isMaxReached}
             >
-                Add to Horde
+                {isMaxReached ? "Max reached" : "Add to Horde"}
             </button>
         </div>
     );

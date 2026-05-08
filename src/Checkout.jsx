@@ -2,17 +2,18 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
 import styles from "./Styles.module.css";
-import { pluralizeMonster } from "./monsterPlurals";
-import mastercard from './Mastercard.png';
-import visa from './Visa.png';
+import { pluralizeMonster } from "./utils/monsterPlurals";
+import mastercard from './assets/images/Mastercard.png';
+import visa from './assets/images/Visa.png';
+import { formatList } from "./utils/formatList";
+import { calculateHordeTotal } from "./utils/hordeUtils";
+import { useToast } from "./hooks/useToast";
 
-function Checkout({ setToastMessage, horde, setHorde, setPurchased, user }) {
+function Checkout({ horde, setHorde, setPurchased, user }) {
   const navigate = useNavigate();
+  const { addToast } = useToast();
 
-  const total = horde.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const total = calculateHordeTotal(horde);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -188,7 +189,11 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased, user }) {
     );
 
     setPurchased(true);
-    setToastMessage("Payment successful!");
+    // setToasts((prev) => [
+    //   ...prev,
+    //   { id: Date.now(), text: "Payment successful" }
+    // ]);
+    addToast("Payment successgul");
 
     // Clear horde for this user
     localStorage.removeItem(`horde_${user.email}`);
@@ -203,12 +208,6 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased, user }) {
 
   //ENTER button works for payment confirmation
   const confirmButtonRef = useRef(null);
-
-  const formatList = (arr) => {
-    if (arr.length === 1) return arr[0];
-    if (arr.length === 2) return arr.join(" and ");
-    return arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
-  };
 
   useEffect(() => {
     if (confirmOpen) {
@@ -244,7 +243,11 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased, user }) {
         e.preventDefault();
         // in case someone bypasses navigation
         if (!user) {
-          setToastMessage("You must be logged in to pay");
+          // setToasts((prev) => [
+          //   ...prev,
+          //   { id: Date.now(), text: "You must be logged in to pay." }
+          // ]);
+          addToast("You must be logged in to pay");
           return;
         }
 
@@ -403,7 +406,7 @@ function Checkout({ setToastMessage, horde, setHorde, setPurchased, user }) {
                 onClick={onClose}
                 className={`${styles.mybutton} ${selected === "cancel" ? styles.modalSelected : ""
                   }`}
-                style={{ backgroundColor: "#777" }}
+                style={{ backgroundColor: "#777", marginLeft: "10px" }}
               >
                 Cancel
               </button>

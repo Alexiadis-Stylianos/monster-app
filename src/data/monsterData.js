@@ -1,17 +1,17 @@
-import zombie from './zombie.jpg';
-import vampire from './vampire.jpg';
-import ghost from './ghost.jpg';
-import ghoul from './ghoul.png'
-import lich from './lich.jpg';
-import imp from './imp.jpg';
-import succubus from './succubus.jpg';
-import hellhound from './hellhound.webp';
-import goblin from './goblin.webp'
-import orc from './orc.jpg';
-import troll from './troll.jpg';
-import werewolf from './werewolf.webp'
-import giantSpider from './giant-spider.jpg';
-import direWolf from './dire-wolf.jpg';
+import zombie from '../assets/images/zombie.jpg';
+import vampire from '../assets/images/vampire.jpg';
+import ghost from '../assets/images/ghost.jpg';
+import ghoul from '../assets/images/ghoul.png'
+import lich from '../assets/images/lich.jpg';
+import imp from '../assets/images/imp.jpg';
+import succubus from '../assets/images/succubus.jpg';
+import hellhound from '../assets/images/hellhound.webp';
+import goblin from '../assets/images/goblin.webp'
+import orc from '../assets/images/orc.jpg';
+import troll from '../assets/images/troll.jpg';
+import werewolf from '../assets/images/werewolf.webp'
+import giantSpider from '../assets/images/giant-spider.jpg';
+import direWolf from '../assets/images/dire-wolf.jpg';
 
 const monsterData = [
   { id: "ghost", name: "Ghost", price: 5, category: "Undead", image: ghost },
@@ -29,8 +29,8 @@ const monsterData = [
   { id: "troll", name: "Troll", price: 12, category: "Humanoid", image: troll },
 
   { id: "werewolf", name: "Werewolf", price: 20, category: "Beast", image: werewolf },
-  { id: "giant spider", name: "Giant Spider", price: 12, category: "Beast", image: giantSpider },
-  { id: "direwolf", name: "Dire Wolf", price: 10, category: "Beast", image: direWolf }
+  { id: "giant-spider", name: "Giant Spider", price: 12, category: "Beast", image: giantSpider },
+  { id: "dire-wolf", name: "Dire Wolf", price: 10, category: "Beast", image: direWolf }
 ];
 
 export default monsterData;

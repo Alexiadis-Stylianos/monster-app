@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import styles from "./Styles.module.css";
 import { useNavigate } from "react-router-dom";
+import { validateUser, setCurrentUser } from "./utils/auth";
+import { useToast } from "./hooks/useToast";
 
-function Login({ setUser, setToastMessage }) {
+function Login({ setUser }) {
     const {
         register,
         handleSubmit,
@@ -10,26 +12,28 @@ function Login({ setUser, setToastMessage }) {
     } = useForm();
 
     const navigate = useNavigate();
+    const { addToast } = useToast();
 
     const onSubmit = (data) => {
-        const users = JSON.parse(localStorage.getItem("users")) || [];
+        const result = validateUser(data.email, data.password);
 
-        const foundUser = users.find(user => user.email === data.email);
-
-        if (!foundUser) {
-            setToastMessage("User not found");
+        if (result.error) {
+            // setToasts((prev) => [
+            //     ...prev,
+            //     { id: Date.now(), text: result.error }
+            // ]);
+            addToast(result.error);
             return;
         }
 
-        if (foundUser.password !== data.password) {
-            setToastMessage("Incorrect password");
-            return;
-        }
+        setCurrentUser(result.user);
+        setUser(result.user);
 
-        localStorage.setItem("currentUser", JSON.stringify(foundUser));
-        setUser(foundUser);
-
-        setToastMessage("Login successful!");
+        // setToasts((prev) => [
+        //     ...prev,
+        //     { id: Date.now(), text: "Login successful." }
+        // ]);
+        addToast("Login successful");
 
         navigate("/");      // redirect to shop
     };

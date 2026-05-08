@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Styles.module.css";
+import { useToast } from "./hooks/useToast";
 
-function AuthSection({ user, setUser, setToastMessage }) {
+function AuthSection({ user, setUser }) {
     const navigate = useNavigate();
+    const { addToast } = useToast();
 
     // Controls dropdown visibility
     const [open, setOpen] = useState(false);
@@ -64,7 +66,7 @@ function AuthSection({ user, setUser, setToastMessage }) {
                                 onClick={() => {
                                     localStorage.removeItem("currentUser");
                                     setUser(null);
-                                    setToastMessage("Logged out");
+                                    addToast("Logged out");
                                     setOpen(false);
                                 }}
                                 className={styles.dropdownItem}

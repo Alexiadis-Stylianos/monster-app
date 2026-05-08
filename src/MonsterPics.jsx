@@ -1,13 +1,13 @@
 import { Outlet, NavLink } from 'react-router-dom';
 
 function MonsterPics() {
-    const navLinkStyles = ({ isActive }) => ({
+  const navLinkStyles = ({ isActive }) => ({
     color: isActive ? '#DC143C' : 'inherit',
     textDecoration: isActive ? 'none' : 'underline',
     fontWeight: isActive ? 'bold' : 'normal',
     padding: '5px 10px'
   });
-  
+
   return (
     <div>
       <h1>Pictures of the Monsters we provide</h1>
@@ -24,8 +24,8 @@ function MonsterPics() {
         <NavLink to="/monsterpics/orc" style={navLinkStyles}>Orc</NavLink> |{" "}
         <NavLink to="/monsterpics/troll" style={navLinkStyles}>Troll</NavLink> |{" "}
         <NavLink to="/monsterpics/werewolf" style={navLinkStyles}>Werewolf</NavLink> |{" "}
-        <NavLink to="/monsterpics/giantSpider" style={navLinkStyles}>Giant Spider</NavLink> |{" "}
-        <NavLink to="/monsterpics/direWolf" style={navLinkStyles}>Dire Wolf</NavLink>
+        <NavLink to="/monsterpics/giantSpider">Giant Spider</NavLink> |{" "}
+        <NavLink to="/monsterpics/direWolf">Dire Wolf</NavLink>
       </nav>
       <Outlet />
     </div>

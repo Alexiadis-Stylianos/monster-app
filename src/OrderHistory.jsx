@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { pluralizeMonster } from "./monsterPlurals";
+import { pluralizeMonster } from "./utils/monsterPlurals";
 
 function OrderHistory({ user }) {
     const [orders, setOrders] = useState([]);

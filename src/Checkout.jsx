@@ -189,11 +189,7 @@ function Checkout({ horde, setHorde, setPurchased, user }) {
     );
 
     setPurchased(true);
-    // setToasts((prev) => [
-    //   ...prev,
-    //   { id: Date.now(), text: "Payment successful" }
-    // ]);
-    addToast("Payment successgul");
+    addToast("Payment successful");
 
     // Clear horde for this user
     localStorage.removeItem(`horde_${user.email}`);
@@ -243,10 +239,6 @@ function Checkout({ horde, setHorde, setPurchased, user }) {
         e.preventDefault();
         // in case someone bypasses navigation
         if (!user) {
-          // setToasts((prev) => [
-          //   ...prev,
-          //   { id: Date.now(), text: "You must be logged in to pay." }
-          // ]);
           addToast("You must be logged in to pay");
           return;
         }

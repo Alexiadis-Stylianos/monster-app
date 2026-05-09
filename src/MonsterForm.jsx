@@ -33,7 +33,7 @@ function MonsterForm({ setHorde, horde, purchased, setPurchased }) {
         setTimeout(() => {
             setHorde([]);
             setPurchased(false);
-            setHolyEffect(false);
+            setHolyEffectKey(0);
         }, 2000); // effect duration
 
         setConfirmOpen(false);

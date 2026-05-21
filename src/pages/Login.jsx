@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
-import styles from "./Styles.module.css";
+import styles from "../Styles.module.css";
 import { useNavigate } from "react-router-dom";
-import { validateUser, setCurrentUser } from "./utils/auth";
-import { useToast } from "./hooks/useToast";
+import { validateUser, setCurrentUser } from "../utils/auth";
+import { useToast } from "../hooks/useToast";
 
 function Login({ setUser }) {
     const {

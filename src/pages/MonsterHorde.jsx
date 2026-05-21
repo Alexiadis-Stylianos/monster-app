@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import Modal from "./Modal";
+import Modal from "../components/Modal";
 import { useState } from "react";
-import styles from "./Styles.module.css";
-import { pluralizeMonster } from "./utils/monsterPlurals";
-import { formatList } from "./utils/formatList";
-import { calculateHordeTotal } from "./utils/hordeUtils";
-import QuantityStepper from "./components/QuantityStepper";
+import styles from "../Styles.module.css";
+import { pluralizeMonster } from "../utils/monsterPlurals";
+import { formatList } from "../utils/formatList";
+import { calculateHordeTotal } from "../utils/hordeUtils";
+import QuantityStepper from "../components/QuantityStepper";
 
 function MonsterHorde({ horde, setHorde, user }) {
   const navigate = useNavigate();

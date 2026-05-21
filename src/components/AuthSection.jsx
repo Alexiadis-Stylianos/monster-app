@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./Styles.module.css";
-import { useToast } from "./hooks/useToast";
+import styles from "../Styles.module.css";
+import { useToast } from "../hooks/useToast";
 
 function AuthSection({ user, setUser, theme, setTheme }) {
     const navigate = useNavigate();

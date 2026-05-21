@@ -1,17 +1,17 @@
 import { useState, useRef, useEffect, useMemo } from "react";
-import Modal from "./Modal";
-import styles from "./Styles.module.css";
-import scream from './assets/sounds/scream.wav';
-import exorcism from './assets/sounds/exorcism.wav';
-import { useSound } from "./hooks/useSound";
-import CalculatePrice from "./CalculatePrice";
-import { pluralizeMonster } from "./utils/monsterPlurals";
-import monsterData from "./data/monsterData";
-import MonsterCard from "./MonsterCard";
-import { formatList } from "./utils/formatList";
-import { useAudio } from "./hooks/useAudio";
-import { MAX_QUANTITY } from "./utils/constants";
-import { useToast } from "./hooks/useToast";
+import Modal from "../components/Modal";
+import styles from "../Styles.module.css";
+import scream from '../assets/sounds/scream.wav';
+import exorcism from '../assets/sounds/exorcism.wav';
+import { useSound } from "../hooks/useSound";
+import CalculatePrice from "../components/CalculatePrice";
+import { pluralizeMonster } from "../utils/monsterPlurals";
+import monsterData from "../data/monsterData";
+import MonsterCard from "../components/MonsterCard";
+import { formatList } from "../utils/formatList";
+import { useAudio } from "../hooks/useAudio";
+import { MAX_QUANTITY } from "../utils/constants";
+import { useToast } from "../hooks/useToast";
 
 function MonsterForm({ setHorde, horde, purchased, setPurchased }) {
     const [confirmOpen, setConfirmOpen] = useState(false);

@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import styles from "./Styles.module.css";
-import flip from './assets/sounds/page_flip.wav';
-import { useSound } from "./hooks/useSound";
-import { useAudio } from "./hooks/useAudio";
+import styles from "../Styles.module.css";
+import flip from '../assets/sounds/page_flip.wav';
+import { useSound } from "../hooks/useSound";
+import { useAudio } from "../hooks/useAudio";
 
 function FlipCard({ image, lore }) {
   const [flipped, setFlipped] = useState(false);

@@ -1,4 +1,4 @@
-import monsterData from "./data/monsterData";
+import monsterData from "../data/monsterData";
 
 const COLOR_PRICE = 5;
 

@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Modal from "./Modal";
-import styles from "./Styles.module.css";
-import { pluralizeMonster } from "./utils/monsterPlurals";
-import mastercard from './assets/images/Mastercard.png';
-import visa from './assets/images/Visa.png';
-import { formatList } from "./utils/formatList";
-import { calculateHordeTotal } from "./utils/hordeUtils";
-import { useToast } from "./hooks/useToast";
+import Modal from "../components/Modal";
+import styles from "../Styles.module.css";
+import { pluralizeMonster } from "../utils/monsterPlurals";
+import mastercard from '../assets/images/Mastercard.png';
+import visa from '../assets/images/Visa.png';
+import { formatList } from "../utils/formatList";
+import { calculateHordeTotal } from "../utils/hordeUtils";
+import { useToast } from "../hooks/useToast";
 
 function Checkout({ horde, setHorde, setPurchased, user }) {
   const navigate = useNavigate();

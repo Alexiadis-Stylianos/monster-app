@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "./Styles.module.css";
+import styles from "../Styles.module.css";
 
 function Toast({ toast }) {
   const [visible, setVisible] = useState(false);

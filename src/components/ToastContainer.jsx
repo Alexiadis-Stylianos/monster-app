@@ -1,6 +1,6 @@
 import Toast from "./Toast";
-import styles from "./Styles.module.css";
-import { useToast } from "./hooks/useToast";
+import styles from "../Styles.module.css";
+import { useToast } from "../hooks/useToast";
 
 function ToastContainer() {
     const { toasts } = useToast();

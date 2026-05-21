@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import styles from "./Styles.module.css";
-import { findUserByEmail, addUser } from "./utils/auth";
-import { useToast } from "./hooks/useToast";
+import styles from "../Styles.module.css";
+import { findUserByEmail, addUser } from "../utils/auth";
+import { useToast } from "../hooks/useToast";
 
 function Register() {
     const {

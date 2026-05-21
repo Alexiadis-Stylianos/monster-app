@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import { monsterLoreData } from "./data/monsterLoreData";
-import FlipCard from "./FlipCard";
+import { monsterLoreData } from "../data/monsterLoreData";
+import FlipCard from "../components/FlipCard";
 
 function MonsterPage() {
   const { type } = useParams();

@@ -1,19 +1,19 @@
 import { Suspense, lazy, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
-import MonsterHorde from "./MonsterHorde";
+import MonsterHorde from "./pages/MonsterHorde";
 import styles from "./Styles.module.css";
-import MonsterPage from './MonsterPage.jsx';
-import MonsterPics from './MonsterPics.jsx';
-import Checkout from './Checkout';
-import About from './About.jsx';
-import Register from "./Registration.jsx";
-import Login from "./Login";
-import ProtectedRoute from './ProtectedRoute.jsx';
-import OrderHistory from "./OrderHistory";
-import Account from "./Account";
-import AuthSection from './AuthSection.jsx';
+import MonsterPage from './pages/MonsterPage.jsx';
+import MonsterPics from './pages/MonsterPics.jsx';
+import Checkout from './pages/Checkout';
+import About from './pages/About.jsx';
+import Register from "./pages/Registration.jsx";
+import Login from "./pages/Login";
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import OrderHistory from "./pages/OrderHistory";
+import Account from "./pages/Account";
+import AuthSection from './components/AuthSection.jsx';
 
-const Monster = lazy(() => import('./MonsterForm'))
+const Monster = lazy(() => import('./pages/MonsterForm'))
 
 function App() {
   // Style function for active links 

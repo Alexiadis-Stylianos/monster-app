@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import styles from "./Styles.module.css";
-import growl from './assets/sounds/growl.wav';
-import { useSound } from "./hooks/useSound";
-import { useAudio } from "./hooks/useAudio";
+import styles from "../Styles.module.css";
+import growl from '../assets/sounds/growl.wav';
+import { useSound } from "../hooks/useSound";
+import { useAudio } from "../hooks/useAudio";
 import CalculatePrice from "./CalculatePrice";
-import { MAX_QUANTITY } from "./utils/constants";
-import QuantityStepper from "./components/QuantityStepper";
+import { MAX_QUANTITY } from "../utils/constants";
+import QuantityStepper from "./QuantityStepper";
 
 function MonsterCard({ monster, horde, onAdd }) {
     const [quantity, setQuantity] = useState(1);

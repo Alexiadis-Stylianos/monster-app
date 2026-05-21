@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import { useEffect, useRef, useState } from "react";
-import styles from "./Styles.module.css";
+import styles from "../Styles.module.css";
 
 function Modal({ isOpen, onClose, onConfirm, children }) {
   const modalRef = useRef(null);

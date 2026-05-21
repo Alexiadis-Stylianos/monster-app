@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./Styles.module.css";
 import { useToast } from "./hooks/useToast";
 
-function AuthSection({ user, setUser }) {
+function AuthSection({ user, setUser, theme, setTheme }) {
     const navigate = useNavigate();
     const { addToast } = useToast();
 
@@ -73,6 +73,17 @@ function AuthSection({ user, setUser }) {
                             >
                                 Logout
                             </button>
+                            <div className={styles.dropdownDivider}></div>
+
+                            <button
+                                className={styles.dropdownItem}
+                                onClick={() => {
+                                    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+                                    setOpen(false);
+                                }}
+                            >
+                                {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
+                            </button>
                         </>
                     ) : (
                         <>
@@ -94,6 +105,18 @@ function AuthSection({ user, setUser }) {
                                 className={styles.dropdownItem}
                             >
                                 Register
+                            </button>
+
+                            <div className={styles.dropdownDivider}></div>
+
+                            <button
+                                className={styles.dropdownItem}
+                                onClick={() => {
+                                    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+                                    setOpen(false);
+                                }}
+                            >
+                                {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
                             </button>
                         </>
                     )}

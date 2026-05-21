@@ -34,54 +34,178 @@ function Register() {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <h2>Register</h2>
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className={styles.formContainer}
+        >
+            <h2 className={styles.formTitle}>Register</h2>
 
-            {/* NAME */}
-            <input
-                placeholder="Name"
-                {...register("name", {
-                    required: "Name required"
-                })}
-            />
-            <p>{errors.name?.message}</p>
+            <div className={styles.formGroup}>
+                <label
+                    htmlFor="register-name"
+                    className={styles.formLabel}
+                >
+                    Name
+                </label>
 
-            {/* EMAIL */}
-            <input
-                placeholder="Email"
-                {...register("email", {
-                    required: "Email required",
-                    pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Invalid email format"
-                    }
-                })}
-            />
-            <p>{errors.email?.message}</p>
+                <input
+                    id="register-name"
+                    type="text"
+                    autoComplete="name"
+                    className={styles.formInput}
+                    placeholder="Enter your name"
+                    aria-invalid={errors.name ? "true" : "false"}
+                    {...register("name", {
+                        required: "Name required"
+                    })}
+                />
+                <p className={styles.errorText}>
+                    {errors.name?.message}
+                </p>
+            </div>
 
-            {/* PASSWORD */}
-            <input
-                type="password"
-                placeholder="Password"
-                {...register("password", {
-                    required: "Password required",
-                    validate: (value) => {
-                        if (value.length < 8) return "At least 8 characters";
-                        if (!/[A-Z]/.test(value)) return "One uppercase letter required";
-                        if (!/[0-9]/.test(value)) return "One number required";
-                        return true;
-                    }
-                })}
-            />
-            <p>{errors.password?.message}</p>
+            <div className={styles.formGroup}>
+                {/* EMAIL */}
+                <label htmlFor="register-email">
+                    Email
+                </label>
+
+                <input
+                    id="register-email"
+                    type="email"
+                    autoComplete="email"
+                    inputMode="email"
+                    className={styles.formInput}
+                    placeholder="Enter your email"
+                    aria-invalid={errors.email ? "true" : "false"}
+                    {...register("email", {
+                        required: "Email required",
+                        pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: "Invalid email format"
+                        }
+                    })}
+                />
+                <p className={styles.errorText}>
+                    {errors.email?.message}
+                </p>
+            </div>
+
+            <div className={styles.formGroup}>
+                <label
+                    htmlFor="register-password"
+                    className={styles.formLabel}
+                >
+                    Password
+                </label>
+
+                <input
+                    id="register-password"
+                    type="password"
+                    autoComplete="current-password"
+                    className={styles.formInput}
+                    placeholder="Enter password"
+                    aria-invalid={errors.password ? "true" : "false"}
+                    {...register("password", {
+                        required: "Password required"
+                    })}
+                />
+                <p className={styles.errorText}>
+                    {errors.password?.message}
+                </p>
+            </div>
 
             <button
                 type="submit"
-                className={styles.mybutton}>
+                className={styles.mybutton}
+            >
                 Register
             </button>
-
         </form>
+        // <form onSubmit={handleSubmit(onSubmit)}>
+        //     <h2>Register</h2>
+
+        //     {/* NAME */}
+        //     <label htmlFor="register-name">
+        //         Name
+        //     </label>
+
+        //     <input
+        //         id="register-name"
+        //         type="text"
+        //         autoComplete="name"
+        //         placeholder="Enter your name"
+        //         aria-invalid={errors.name ? "true" : "false"}
+        //         {...register("name", {
+        //             required: "Name required"
+        //         })}
+        //     />
+
+        //     <p>{errors.name?.message}</p>
+
+        //     {/* EMAIL */}
+        //     <label htmlFor="register-email">
+        //         Email
+        //     </label>
+
+        //     <input
+        //         id="register-email"
+        //         type="email"
+        //         autoComplete="email"
+        //         inputMode="email"
+        //         placeholder="Enter your email"
+        //         aria-invalid={errors.email ? "true" : "false"}
+        //         {...register("email", {
+        //             required: "Email required",
+        //             pattern: {
+        //                 value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        //                 message: "Invalid email format"
+        //             }
+        //         })}
+        //     />
+
+        //     <p>{errors.email?.message}</p>
+
+        //     {/* PASSWORD */}
+        //     <label htmlFor="register-password">
+        //         Password
+        //     </label>
+
+        //     <input
+        //         id="register-password"
+        //         type="password"
+        //         autoComplete="new-password"
+        //         placeholder="Create a password"
+        //         aria-invalid={errors.password ? "true" : "false"}
+        //         {...register("password", {
+        //             required: "Password required",
+        //             validate: (value) => {
+        //                 if (value.length < 8) {
+        //                     return "At least 8 characters";
+        //                 }
+
+        //                 if (!/[A-Z]/.test(value)) {
+        //                     return "One uppercase letter required";
+        //                 }
+
+        //                 if (!/[0-9]/.test(value)) {
+        //                     return "One number required";
+        //                 }
+
+        //                 return true;
+        //             }
+        //         })}
+        //     />
+
+        //     <p>{errors.password?.message}</p>
+
+        //     <button
+        //         type="submit"
+        //         className={styles.mybutton}
+        //     >
+        //         Register
+        //     </button>
+        // </form>
     );
 }
 

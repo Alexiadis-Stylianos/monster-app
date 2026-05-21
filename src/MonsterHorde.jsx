@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import styles from "./Styles.module.css";
 import { pluralizeMonster } from "./utils/monsterPlurals";
 import { formatList } from "./utils/formatList";
 import { calculateHordeTotal } from "./utils/hordeUtils";
-import { MAX_QUANTITY } from "./utils/constants";
+import QuantityStepper from "./components/QuantityStepper";
 
 function MonsterHorde({ horde, setHorde, user }) {
   const navigate = useNavigate();
@@ -17,69 +17,63 @@ function MonsterHorde({ horde, setHorde, user }) {
     navigate("/checkout");
   };
 
-  const handleQuantityChange = (index, value) => {
-    const num = parseInt(value, 10);
-
-    setHorde(prev => {
-      const updated = [...prev];
-
-      if (isNaN(num)) {
-        updated[index].quantity = "";
-      } else {
-        updated[index].quantity = Math.max(1, Math.min(MAX_QUANTITY, num));
-      }
-
-      return updated;
-    });
-  };
-
-  const handleQuantityBlur = (index) => {
-    setHorde(prev => {
-      const updated = [...prev];
-
-      if (!updated[index].quantity || updated[index].quantity < 1) {
-        updated[index].quantity = 1;
-      }
-
-      if (updated[index].quantity > MAX_QUANTITY) {
-        updated[index].quantity = MAX_QUANTITY;
-      }
-
-      return updated;
-    });
-  };
-
   return (
-    <div style={{ textAlign: "center" }}>
+    <div className={styles.hordeContainer}>
       <h1>Your Monster Horde</h1>
       {horde.length === 0 && <p>Your horde is empty...</p>}
       {horde.map((m, i) => (
-        <div key={i} style={{ marginBottom: "10px" }}>
-          <p>
-            {m.quantity} x {formatList(m.colors)} {pluralizeMonster(m.monster, m.quantity)} — {m.price * m.quantity}€
-          </p>
+        <div key={i} className={styles.hordeItem}>
+          <div className={styles.hordeInfo}>
+            <p>
+              {m.quantity} x {formatList(m.colors)}{" "}
+              {pluralizeMonster(m.monster, m.quantity)}
+              {" — "}
+              {m.price * m.quantity}€
+            </p>
+          </div>
 
-          <input
-            type="number"
-            min="1"
-            value={m.quantity}
-            onChange={(e) => handleQuantityChange(i, e.target.value)}
-            onBlur={() => handleQuantityBlur(i)}
-            style={{ width: "60px", margin: "0 10px" }}
-          />
+          <div className={styles.hordeControls}>
+            <div className={styles.quantityGroup}>
+              <label
+                htmlFor={`horde-quantity-${i}`}
+                className={styles.quantityLabel}
+              >
+                Quantity
+              </label>
 
-          <button
-            onClick={() =>
-              setRemoveAmountConfirm({
-                index: i,
-                amount: m.quantity // default = remove all
-              })
-            }
-            style={{ marginLeft: "5px" }}
-            className={styles.mybutton}
-          >
-            Remove
-          </button>
+              <QuantityStepper
+                value={m.quantity}
+                onChange={(updater) => {
+                  setHorde(prev => {
+                    const updated = [...prev];
+
+                    const currentQuantity = updated[i].quantity;
+
+                    updated[i].quantity =
+                      typeof updater === "function"
+                        ? updater(currentQuantity)
+                        : updater;
+
+                    return updated;
+                  });
+                }}
+                id={`horde-quantity-${i}`}
+                name={`horde-quantity-${i}`}
+              />
+            </div>
+
+            <button
+              onClick={() =>
+                setRemoveAmountConfirm({
+                  index: i,
+                  amount: m.quantity
+                })
+              }
+              className={styles.mybutton}
+            >
+              Remove
+            </button>
+          </div>
         </div>
       ))}
 
@@ -91,7 +85,7 @@ function MonsterHorde({ horde, setHorde, user }) {
             onClick={() => setClearConfirmOpen(true)}
             style={{ marginRight: "10px" }}
             className={styles.mybutton}
-            >
+          >
             Clear All
           </button>
 

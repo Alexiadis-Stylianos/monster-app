@@ -63,12 +63,15 @@ function App() {
     0
   );
 
-  //Dark Mode
-  const [theme, setTheme] = useState("light");
+  // Dark Mode with persistence
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "light";
+  });
 
   useEffect(() => {
     document.body.classList.remove("light", "dark");
     document.body.classList.add(theme);
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
   return (
@@ -76,15 +79,9 @@ function App() {
       <AuthSection
         user={user}
         setUser={setUser}
+        theme={theme}
+        setTheme={setTheme}
       />
-      <button
-        className="theme-toggle"
-        onClick={() =>
-          setTheme((prev) => (prev === "light" ? "dark" : "light"))
-        }
-      >
-        {theme === "light" ? "🌙" : "☀️"}
-      </button>
       <nav className={styles.pagesCenter}>
         <NavLink to="/" style={navLinkStyles}>Shop</NavLink> |{" "}
         <NavLink to="/horde" style={navLinkStyles}>

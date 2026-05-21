@@ -3,7 +3,7 @@ import Modal from "./Modal";
 import styles from "./Styles.module.css";
 import scream from './assets/sounds/scream.wav';
 import exorcism from './assets/sounds/exorcism.wav';
-import { useSound } from "./context/SoundContext";
+import { useSound } from "./hooks/useSound";
 import CalculatePrice from "./CalculatePrice";
 import { pluralizeMonster } from "./utils/monsterPlurals";
 import monsterData from "./data/monsterData";
@@ -15,8 +15,6 @@ import { useToast } from "./hooks/useToast";
 
 function MonsterForm({ setHorde, horde, purchased, setPurchased }) {
     const [confirmOpen, setConfirmOpen] = useState(false);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [modalMessage, setModalMessage] = useState("");
     const [holyEffectKey, setHolyEffectKey] = useState(0);
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [isFading, setIsFading] = useState(false);
@@ -188,12 +186,6 @@ function MonsterForm({ setHorde, horde, purchased, setPurchased }) {
                     ))}
             </div>
 
-            {/* MODALS */}
-            <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)}>
-                <h2>Added to Horde</h2>
-                <p>{modalMessage}</p>
-            </Modal>
-
             <button
                 className={styles.exorcismbutton}
                 disabled={!purchased}
@@ -201,6 +193,8 @@ function MonsterForm({ setHorde, horde, purchased, setPurchased }) {
             >
                 Exorcism (Free)
             </button>
+
+            {/* MODAL */}
 
             <Modal
                 isOpen={confirmOpen}

@@ -50,36 +50,6 @@ body.dark nav a:hover {
   color: #fff;
 }
 
-.theme-toggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1500;
-  border-radius: 50%;
-  padding: 10px 12px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-}
-
-.theme-toggle:hover {
-  transform: scale(1.05);
-}
-
-/* LIGHT MODE (moon button) */
-body.light .theme-toggle {
-  background-color: #000;
-  color: #fff;
-}
-
-/* DARK MODE (sun button) */
-body.dark .theme-toggle {
-  background-color: #fff;
-  color: #000;
-}
-
 /* DISABLED BUTTON FIX */
 button:disabled {
   opacity: 0.4;

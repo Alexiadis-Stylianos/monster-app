@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import { useSound } from "../context/SoundContext";
+import { useSound } from "./useSound";
 
 export function useAudio(src) {
     const { register } = useSound();

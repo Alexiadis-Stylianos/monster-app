@@ -1,10 +1,11 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./Styles.module.css";
 import growl from './assets/sounds/growl.wav';
-import { useSound } from "./context/SoundContext";
+import { useSound } from "./hooks/useSound";
 import { useAudio } from "./hooks/useAudio";
 import CalculatePrice from "./CalculatePrice";
 import { MAX_QUANTITY } from "./utils/constants";
+import QuantityStepper from "./components/QuantityStepper";
 
 function MonsterCard({ monster, horde, onAdd }) {
     const [quantity, setQuantity] = useState(1);
@@ -13,8 +14,15 @@ function MonsterCard({ monster, horde, onAdd }) {
 
     //Hover features
     const handleHoverEnter = () => {
-        if (!growlAudio.current || !growlAudio.current.paused) return;
-        play(growlAudio.current);
+        const audio = growlAudio.current;
+
+        if (!audio) return;
+
+        if (audio.readyState < 2) return;
+
+        if (!audio.paused) return;
+
+        play(audio);
     };
 
     const handleHoverLeave = () => {
@@ -29,11 +37,11 @@ function MonsterCard({ monster, horde, onAdd }) {
     });
 
     const handleColorChange = (e) => {
-        const { name, checked } = e.target;
+        const { value, checked } = e.target;
 
         setColors(prev => ({
             ...prev,
-            [name]: checked
+            [value]: checked
         }));
     };
 
@@ -100,6 +108,12 @@ function MonsterCard({ monster, horde, onAdd }) {
         setQuantity(1);
     };
 
+    useEffect(() => {
+        if (growlAudio.current) {
+            register(growlAudio.current);
+        }
+    }, [growlAudio, register]);
+
     return (
         <div key={monster.id} className={styles.monsterCard}>
             <img
@@ -113,59 +127,81 @@ function MonsterCard({ monster, horde, onAdd }) {
             <p>Total: {totalPrice}€</p>
 
             <div>
-                <label style={{ color: "red" }}>
+                <label
+                    htmlFor={`red-${monster.id}`}
+                    style={{ color: "red" }}
+                >
                     Red
-                    <input
-                        type="checkbox"
-                        name="red"
-                        checked={colors.red}
-                        onChange={handleColorChange}
-                    />
                 </label>
 
-                <label style={{ color: "green", marginLeft: "10px" }}>
+                <input
+                    id={`red-${monster.id}`}
+                    type="checkbox"
+                    name={`red-${monster.id}`}
+                    value="red"
+                    checked={colors.red}
+                    onChange={handleColorChange}
+                />
+
+                <label
+                    htmlFor={`green-${monster.id}`}
+                    style={{ color: "green", marginLeft: "10px" }}
+                >
                     Green
-                    <input
-                        type="checkbox"
-                        name="green"
-                        checked={colors.green}
-                        onChange={handleColorChange}
-                    />
                 </label>
 
-                <label style={{ color: "#0178bd", marginLeft: "10px" }}>
+                <input
+                    id={`green-${monster.id}`}
+                    type="checkbox"
+                    name={`green-${monster.id}`}
+                    value="green"
+                    checked={colors.green}
+                    onChange={handleColorChange}
+                />
+
+                <label
+                    htmlFor={`blue-${monster.id}`}
+                    style={{ color: "#0178bd", marginLeft: "10px" }}
+                >
                     Blue
-                    <input
-                        type="checkbox"
-                        name="blue"
-                        checked={colors.blue}
-                        onChange={handleColorChange}
-                    />
                 </label>
+
+                <input
+                    id={`blue-${monster.id}`}
+                    type="checkbox"
+                    name={`blue-${monster.id}`}
+                    value="blue"
+                    checked={colors.blue}
+                    onChange={handleColorChange}
+                />
             </div>
 
             {/* QUANTITY */}
-            <div>
+            <div className={styles.shopActions}>
 
-                <input
-                    type="number"
-                    min="1"
-                    max="MAX_QUANTITY"
+                <QuantityStepper
                     value={quantity}
-                    onChange={(e) => handleInputChange(e.target.value)}
-                    className={styles.quantityInputField}
+                    onChange={(updater) => {
+                        setQuantity(prev =>
+                            typeof updater === "function"
+                                ? updater(prev)
+                                : updater
+                        );
+                    }}
+                    small={true}
                 />
 
+                <button
+                    className={styles.mybutton}
+                    onMouseEnter={handleHoverEnter}
+                    onMouseLeave={handleHoverLeave}
+                    onClick={handleAddClick}
+                    disabled={isMaxReached}
+                >
+                    {isMaxReached ? "Max reached" : "Add to Horde"}
+                </button>
+
             </div>
-            <button
-                className={styles.mybutton}
-                onMouseEnter={handleHoverEnter}
-                onMouseLeave={handleHoverLeave}
-                onClick={handleAddClick}
-                disabled={isMaxReached}
-            >
-                {isMaxReached ? "Max reached" : "Add to Horde"}
-            </button>
         </div>
     );
 }

@@ -577,3 +577,379 @@
     background-position: 0 0;
   }
 }
+
+.shopActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+/*FORM LAYOUTS*/
+
+.formContainer {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 24px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(4px);
+}
+
+:global(body.light) .formContainer {
+  background-color: white;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.formTitle {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.formLabel {
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.formInput {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #555;
+  background-color: #1f1f1f;
+  color: white;
+  font-size: 0.95rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: orange;
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
+}
+
+.formInput::placeholder {
+  opacity: 0.5;
+}
+
+:global(body.light) .formInput {
+  background-color: white;
+  color: #222;
+  border: 1px solid #ccc;
+}
+
+.errorText {
+  color: #ff6b6b;
+  font-size: 0.82rem;
+  margin: 0;
+  min-height: 18px;
+}
+
+/*HORDE LAYOUT*/
+
+.hordeContainer {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.hordeItem {
+  padding: 18px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+:global(body.light) .hordeItem {
+  background-color: white;
+  border: 1px solid #e5e5e5;
+}
+
+.hordeInfo {
+  margin-bottom: 14px;
+}
+
+.hordeControls {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.quantityGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.quantityLabel {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.quantityInput {
+  width: 110px;
+  height: 42px;
+
+  padding: 0 12px;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  background-color: rgba(0, 0, 0, 0.35);
+  color: white;
+
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  box-sizing: border-box;
+}
+
+/* Remove native arrows */
+.quantityInput::-webkit-outer-spin-button,
+.quantityInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantityInput[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.quantityInput:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.quantityInput:focus {
+  outline: none;
+  border-color: orange;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  box-shadow:
+    0 0 0 3px rgba(255, 165, 0, 0.15);
+}
+
+:global(body.light) .quantityInput {
+  background-color: white;
+  color: #222;
+  border: 1px solid #d6d6d6;
+}
+
+:global(body.light) .quantityInput:hover {
+  border-color: #bdbdbd;
+}
+
+:global(body.light) .quantityInput:focus {
+  border-color: orange;
+  background-color: white;
+}
+
+/* QUANTITY STEPPER */
+.quantityStepper {
+  display: flex;
+  align-items: stretch;
+  width: fit-content;
+
+  border-radius: 10px;
+  overflow: hidden;
+
+  background-color: #2b2b2b;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+/* SMALL SHOP VERSION */
+.quantityStepperSmall {
+  transform: scale(0.9);
+  transform-origin: left center;
+}
+
+.quantityStepperSmall .quantityButton {
+  width: 34px;
+  height: 34px;
+  font-size: 1rem;
+}
+
+.quantityStepperSmall .quantityInput {
+  width: 58px;
+  height: 34px;
+  font-size: 0.95rem;
+}
+
+.quantityButton {
+  width: 42px;
+  height: 42px;
+
+  border: none;
+
+  font-size: 1.3rem;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    opacity 0.15s ease,
+    transform 0.1s ease;
+}
+
+/* ACTIVE BUTTON */
+.quantityButtonActive {
+  background-color: orange;
+  color: black;
+}
+
+.quantityButtonActive:hover {
+  filter: brightness(1.05);
+}
+
+/* DISABLED BUTTON */
+.quantityButtonDisabled {
+  background-color: #666;
+  color: #bbb;
+  cursor: not-allowed;
+}
+
+/* CENTER INPUT */
+/* .quantityInput {
+  width: 70px;
+  height: 42px;
+
+  border: none;
+  outline: none;
+
+  text-align: center;
+
+  background-color: #1f1f1f;
+  color: white;
+
+  font-size: 1rem;
+  font-weight: 600;
+} */
+
+/* REMOVE DEFAULT NUMBER ARROWS */
+/* .quantityInput::-webkit-outer-spin-button,
+.quantityInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantityInput[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}  */
+
+.hordeControls {
+  display: flex;
+  align-items: end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hordeItem {
+  padding: 24px;
+  margin-bottom: 18px;
+
+  border-radius: 16px;
+
+  background-color: rgba(255, 255, 255, 0.05);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  backdrop-filter: blur(3px);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.hordeItem:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.hordeInfo p {
+  margin: 0;
+  line-height: 1.5;
+  font-size: 1.05rem;
+}
+
+.hordeActions {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/*BUTTON POLISH*/
+
+.mybutton,
+.exorcismbutton,
+.categoryButton {
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.mybutton:hover,
+.exorcismbutton:hover,
+.categoryButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+.mybutton:active,
+.exorcismbutton:active,
+.categoryButton:active {
+  transform: translateY(0);
+}
+
+/*RESPONSIVE */
+
+@media (max-width: 700px) {
+  .formContainer {
+    padding: 18px;
+  }
+
+  .hordeControls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .quantityInput {
+    width: 100%;
+  }
+
+  .mybutton {
+    width: 100%;
+  }
+}

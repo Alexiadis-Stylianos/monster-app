@@ -1,5 +1,5 @@
 import { Suspense, lazy, useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
+import { HashRouter, Routes, Route, NavLink } from 'react-router-dom';
 import MonsterHorde from "./pages/MonsterHorde";
 import styles from "./Styles.module.css";
 import MonsterPage from './pages/MonsterPage.jsx';
@@ -65,7 +65,7 @@ function App() {
   }, [theme]);
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AuthSection
         user={user}
         setUser={setUser}
@@ -158,7 +158,7 @@ function App() {
           />
         </Routes>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

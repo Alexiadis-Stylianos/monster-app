@@ -20,6 +20,26 @@ This project focuses on frontend logic, state management, and user experience.
 
 ---
 
+## Screenshots
+
+### Monster Shop
+
+![Monster Shop](docs/screenshots/Main-Shop-Screenshot.png)
+
+### Horde
+
+![Monster Horde](docs/screenshots/Shopping-Cart-Screenshot.png)
+
+### Checkout
+
+![Checkout](docs/screenshots/Checkout-Screenshot.png)
+
+### Order History
+
+![Order History](docs/screenshots/Orders-Screenshot.png)
+
+---
+
 ## Tech Stack
 
 - React

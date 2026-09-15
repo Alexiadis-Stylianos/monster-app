@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { pluralizeMonster } from "../utils/monsterPlurals";
+import { getFromStorage } from "../hooks/useLocalStorage";
 
 function OrderHistory({ user }) {
     const [orders, setOrders] = useState([]);
@@ -7,10 +8,9 @@ function OrderHistory({ user }) {
     useEffect(() => {
         if (!user) return;
 
-        const saved =
-            JSON.parse(localStorage.getItem(`orders_${user.email}`)) || [];
-
-        setOrders(saved.reverse());
+        // Retrieve and reverse order to show newest first
+        const savedOrders = getFromStorage(`orders_${user.email}`, []);
+        setOrders(savedOrders.reverse());
     }, [user]);
 
     if (orders.length === 0) {

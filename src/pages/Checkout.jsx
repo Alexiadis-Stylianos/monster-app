@@ -8,6 +8,7 @@ import visa from '../assets/images/Visa.png';
 import { formatList } from "../utils/formatList";
 import { calculateHordeTotal } from "../utils/hordeUtils";
 import { useToast } from "../hooks/useToast";
+import { getFromStorage, saveToStorage, removeFromStorage } from "../hooks/useLocalStorage";
 
 function Checkout({ horde, setHorde, setPurchased, user }) {
   const navigate = useNavigate();
@@ -178,21 +179,15 @@ function Checkout({ horde, setHorde, setPurchased, user }) {
       total
     };
 
-    // Get existing orders for this user
-    const existingOrders =
-      JSON.parse(localStorage.getItem(`orders_${user.email}`)) || [];
-
-    // Save updated orders
-    localStorage.setItem(
-      `orders_${user.email}`,
-      JSON.stringify([...existingOrders, order])
-    );
+    // Get existing orders for this user and append the new order
+    const existingOrders = getFromStorage(`orders_${user.email}`, []);
+    saveToStorage(`orders_${user.email}`, [...existingOrders, order]);
 
     setPurchased(true);
     addToast("Payment successful");
 
-    // Clear horde for this user
-    localStorage.removeItem(`horde_${user.email}`);
+    // Clear horde for this user after purchase
+    removeFromStorage(`horde_${user.email}`);
     setHorde([]);
 
     navigate("/");

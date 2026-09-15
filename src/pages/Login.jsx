@@ -15,6 +15,7 @@ function Login({ setUser }) {
     const { addToast } = useToast();
 
     const onSubmit = (data) => {
+        // Validate credentials against stored user data
         const result = validateUser(data.email, data.password);
 
         if (result.error) {
@@ -22,12 +23,14 @@ function Login({ setUser }) {
             return;
         }
 
+        // Persist logged-in user to storage and update app state
         setCurrentUser(result.user);
         setUser(result.user);
 
         addToast("Login successful");
 
-        navigate("/");      // redirect to shop
+        // Redirect to shop after successful login
+        navigate("/");
     };
 
     return (
@@ -90,53 +93,6 @@ function Login({ setUser }) {
                 Login
             </button>
         </form>
-        // <form onSubmit={handleSubmit(onSubmit)}>
-        //     <h2>Login</h2>
-
-        //     {/* EMAIL */}
-        //     <label htmlFor="login-email">
-        //         Email
-        //     </label>
-
-        //     <input
-        //         id="login-email"
-        //         type="email"
-        //         autoComplete="email"
-        //         inputMode="email"
-        //         placeholder="Enter your email"
-        //         aria-invalid={errors.email ? "true" : "false"}
-        //         {...register("email", {
-        //             required: "Email required"
-        //         })}
-        //     />
-
-        //     <p>{errors.email?.message}</p>
-
-        //     {/* PASSWORD */}
-        //     <label htmlFor="login-password">
-        //         Password
-        //     </label>
-
-        //     <input
-        //         id="login-password"
-        //         type="password"
-        //         autoComplete="current-password"
-        //         placeholder="Enter your password"
-        //         aria-invalid={errors.password ? "true" : "false"}
-        //         {...register("password", {
-        //             required: "Password required"
-        //         })}
-        //     />
-
-        //     <p>{errors.password?.message}</p>
-
-        //     <button
-        //         type="submit"
-        //         className={styles.mybutton}
-        //     >
-        //         Login
-        //     </button>
-        // </form>
     );
 }
 

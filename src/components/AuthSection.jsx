@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../Styles.module.css";
 import { useToast } from "../hooks/useToast";
+import { removeFromStorage } from "../hooks/useLocalStorage";
 
 function AuthSection({ user, setUser, theme, setTheme }) {
     const navigate = useNavigate();
@@ -64,7 +65,8 @@ function AuthSection({ user, setUser, theme, setTheme }) {
 
                             <button
                                 onClick={() => {
-                                    localStorage.removeItem("currentUser");
+                                    // Clear user session from storage and state
+                                    removeFromStorage("currentUser");
                                     setUser(null);
                                     addToast("Logged out");
                                     setOpen(false);
@@ -72,17 +74,6 @@ function AuthSection({ user, setUser, theme, setTheme }) {
                                 className={styles.dropdownItem}
                             >
                                 Logout
-                            </button>
-                            <div className={styles.dropdownDivider}></div>
-
-                            <button
-                                className={styles.dropdownItem}
-                                onClick={() => {
-                                    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-                                    setOpen(false);
-                                }}
-                            >
-                                {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
                             </button>
                         </>
                     ) : (
@@ -106,20 +97,20 @@ function AuthSection({ user, setUser, theme, setTheme }) {
                             >
                                 Register
                             </button>
-
-                            <div className={styles.dropdownDivider}></div>
-
-                            <button
-                                className={styles.dropdownItem}
-                                onClick={() => {
-                                    setTheme((prev) => (prev === "light" ? "dark" : "light"));
-                                    setOpen(false);
-                                }}
-                            >
-                                {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
-                            </button>
                         </>
                     )}
+
+                    <div className={styles.dropdownDivider}></div>
+
+                    <button
+                        className={styles.dropdownItem}
+                        onClick={() => {
+                            setTheme((prev) => (prev === "light" ? "dark" : "light"));
+                            setOpen(false);
+                        }}
+                    >
+                        {theme === "light" ? "🌙 Dark Mode" : "☀️ Light Mode"}
+                    </button>
                 </div>
             )}
         </div>

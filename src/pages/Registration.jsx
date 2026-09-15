@@ -15,6 +15,7 @@ function Register() {
     const { addToast } = useToast();
 
     const onSubmit = (data) => {
+        // Check if email is already registered
         const existingUser = findUserByEmail(data.email);
 
         if (existingUser) {
@@ -22,12 +23,14 @@ function Register() {
             return;
         }
 
+        // Create new user with provided credentials
         const newUser = {
             name: data.name,
             email: data.email,
             password: data.password
         };
 
+        // Save new user to storage and redirect to login
         addUser(newUser);
         addToast("Registration successful. Please log in.");
         navigate("/login");
@@ -122,90 +125,6 @@ function Register() {
                 Register
             </button>
         </form>
-        // <form onSubmit={handleSubmit(onSubmit)}>
-        //     <h2>Register</h2>
-
-        //     {/* NAME */}
-        //     <label htmlFor="register-name">
-        //         Name
-        //     </label>
-
-        //     <input
-        //         id="register-name"
-        //         type="text"
-        //         autoComplete="name"
-        //         placeholder="Enter your name"
-        //         aria-invalid={errors.name ? "true" : "false"}
-        //         {...register("name", {
-        //             required: "Name required"
-        //         })}
-        //     />
-
-        //     <p>{errors.name?.message}</p>
-
-        //     {/* EMAIL */}
-        //     <label htmlFor="register-email">
-        //         Email
-        //     </label>
-
-        //     <input
-        //         id="register-email"
-        //         type="email"
-        //         autoComplete="email"
-        //         inputMode="email"
-        //         placeholder="Enter your email"
-        //         aria-invalid={errors.email ? "true" : "false"}
-        //         {...register("email", {
-        //             required: "Email required",
-        //             pattern: {
-        //                 value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-        //                 message: "Invalid email format"
-        //             }
-        //         })}
-        //     />
-
-        //     <p>{errors.email?.message}</p>
-
-        //     {/* PASSWORD */}
-        //     <label htmlFor="register-password">
-        //         Password
-        //     </label>
-
-        //     <input
-        //         id="register-password"
-        //         type="password"
-        //         autoComplete="new-password"
-        //         placeholder="Create a password"
-        //         aria-invalid={errors.password ? "true" : "false"}
-        //         {...register("password", {
-        //             required: "Password required",
-        //             validate: (value) => {
-        //                 if (value.length < 8) {
-        //                     return "At least 8 characters";
-        //                 }
-
-        //                 if (!/[A-Z]/.test(value)) {
-        //                     return "One uppercase letter required";
-        //                 }
-
-        //                 if (!/[0-9]/.test(value)) {
-        //                     return "One number required";
-        //                 }
-
-        //                 return true;
-        //             }
-        //         })}
-        //     />
-
-        //     <p>{errors.password?.message}</p>
-
-        //     <button
-        //         type="submit"
-        //         className={styles.mybutton}
-        //     >
-        //         Register
-        //     </button>
-        // </form>
     );
 }
 

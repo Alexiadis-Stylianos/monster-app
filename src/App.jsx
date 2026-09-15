@@ -12,6 +12,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import OrderHistory from "./pages/OrderHistory";
 import Account from "./pages/Account";
 import AuthSection from './components/AuthSection.jsx';
+import { useLocalStorage, getFromStorage, saveToStorage } from './hooks/useLocalStorage';
 
 const Monster = lazy(() => import('./pages/MonsterForm'))
 
@@ -24,54 +25,43 @@ function App() {
     padding: '5px 10px'
   });
 
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem("currentUser");
-    return saved ? JSON.parse(saved) : null;
-  });
+  // Persist current user login state
+  const [user, setUser] = useLocalStorage("currentUser", null);
 
+  // Persist purchased flag across sessions
+  const [purchased, setPurchased] = useLocalStorage("purchased", false);
+
+  // Persist theme preference (light/dark mode)
+  const [theme, setTheme] = useLocalStorage("theme", "light");
+
+  // Persist user's shopping horde based on their email
   const [horde, setHorde] = useState([]);
   useEffect(() => {
     if (!user) {
       setHorde([]);
       return;
     }
-
-    const saved = localStorage.getItem(`horde_${user.email}`);
-    setHorde(saved ? JSON.parse(saved) : []);
+    // Load user's horde from storage or initialize empty
+    const saved = getFromStorage(`horde_${user.email}`, []);
+    setHorde(saved);
   }, [user]);
 
-  const [purchased, setPurchased] = useState(() => {
-    const saved = localStorage.getItem("purchased");
-    return saved ? JSON.parse(saved) : false;
-  });
-
+  // Save horde to storage whenever it changes
   useEffect(() => {
     if (!user) return;
-
-    localStorage.setItem(
-      `horde_${user.email}`,
-      JSON.stringify(horde)
-    );
+    saveToStorage(`horde_${user.email}`, horde);
   }, [horde, user]);
 
-  useEffect(() => {
-    localStorage.setItem("purchased", JSON.stringify(purchased));
-  }, [purchased]);
-
+  // Calculate total quantity of items in horde
   const totalQuantity = horde.reduce(
     (sum, item) => sum + item.quantity,
     0
   );
 
-  // Dark Mode with persistence
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("theme") || "light";
-  });
-
+  // Apply theme to document body and sync with DOM
   useEffect(() => {
     document.body.classList.remove("light", "dark");
     document.body.classList.add(theme);
-    localStorage.setItem("theme", theme);
   }, [theme]);
 
   return (

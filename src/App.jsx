@@ -73,7 +73,7 @@ function App() {
         setTheme={setTheme}
       />
       <nav className={styles.pagesCenter}>
-        <NavLink to="/" style={navLinkStyles}>Shop</NavLink> |{" "}
+        <NavLink to="/monster-app" style={navLinkStyles}>Shop</NavLink> |{" "}
         <NavLink to="/horde" style={navLinkStyles}>
           Monster Horde {totalQuantity > 0 && `(${totalQuantity})`}
         </NavLink> |{" "}
@@ -95,7 +95,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/" element={
+          <Route path="/monster-app" element={
             <Suspense fallback={<div>Loading options...</div>}>
               <Monster
                 setHorde={setHorde}

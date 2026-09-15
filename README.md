@@ -7,16 +7,9 @@ This project focuses on frontend logic, state management, and user experience.
 
 ---
 
-## Features
+## Live Demo
 
-- Hire monsters with customizable color options
-- Quantity-based cart management (no duplicates)
-- Persistent cart using LocalStorage
-- Checkout flow with form validation
-- Confirmation modals for destructive actions
-- Toast notifications instead of browser alerts
-- Dark mode support
-- Sound effects (can be toggled)
+[View Monster Horde Shop](https://alexiadis-stylianos.github.io/monster-app/)
 
 ---
 
@@ -39,6 +32,20 @@ This project focuses on frontend logic, state management, and user experience.
 ![Order History](docs/screenshots/Orders-Screenshot.png)
 
 ---
+
+## Features
+
+- Hire monsters with customizable color options
+- Quantity-based cart management (no duplicates)
+- Persistent cart using LocalStorage
+- Checkout flow with form validation
+- Confirmation modals for destructive actions
+- Toast notifications instead of browser alerts
+- Dark mode support
+- Sound effects (can be toggled)
+
+---
+
 
 ## Tech Stack
 

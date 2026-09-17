@@ -9,7 +9,7 @@ This project focuses on frontend logic, state management, and user experience.
 
 ## Live Demo
 
-[View Monster Horde Shop](https://alexiadis-stylianos.github.io/monster-app/)
+[View Monster Horde Shop](https://alexiadis-stylianos.github.io/monster-app/#/monster-app)
 
 ---
 

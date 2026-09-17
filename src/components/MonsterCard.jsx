@@ -55,30 +55,6 @@ function MonsterCard({ monster, horde, onAdd }) {
         return selected.length ? selected : ["normal"];
     };
 
-    //Quantity input field
-    const handleInputChange = (value) => {
-        const num = parseInt(value, 10);
-
-        // Prevent invalid values
-        if (isNaN(num)) {
-            setQuantity("");
-            return;
-        }
-
-        // Minimum value enforcement
-        if (num < 1) {
-            setQuantity(1);
-            return;
-        }
-
-        if (num > MAX_QUANTITY) {
-            setQuantity(MAX_QUANTITY);
-            return;
-        }
-
-        setQuantity(num);
-    };
-
     const selectedColors = getSelectedColors();
     const existingItem = horde.find(m => {
         const sameMonster = m.monster === monster.id;

@@ -37,7 +37,7 @@ function MonsterForm({ setHorde, horde, purchased, setPurchased }) {
         setConfirmOpen(false);
     };
 
-    const { register, play } = useSound();
+    const { play } = useSound();
 
     const screamAudio = useAudio(scream);
     const exorcismAudio = useAudio(exorcism);

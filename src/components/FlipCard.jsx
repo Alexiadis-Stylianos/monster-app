@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "../Styles.module.css";
 import flip from '../assets/sounds/page_flip.wav';
 import { useSound } from "../hooks/useSound";
@@ -6,10 +6,14 @@ import { useAudio } from "../hooks/useAudio";
 
 function FlipCard({ image, lore }) {
   const [flipped, setFlipped] = useState(false);
-  const { register, play } = useSound();
+  const { play } = useSound();
 
   //page turn sound
   const flipAudio = useAudio(flip);
+
+  useEffect(() => {
+    setFlipped(false);
+  }, [image]); // Reset flip state when image changes
 
   const handleFlip = () => {
     play(flipAudio.current);

@@ -584,6 +584,7 @@
   gap: 10px;
   margin-top: 12px;
 }
+
 /*FORM LAYOUTS*/
 
 .formContainer {
@@ -782,6 +783,16 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
+/* LIGHT MODE */
+:global(body.light) .quantityStepper {
+  background-color: white;
+  border: 1px solid #d6d6d6;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(0, 0, 0, 0.03);
+}
+
 /* SMALL SHOP VERSION */
 .quantityStepperSmall {
   transform: scale(0.9);
@@ -834,34 +845,17 @@
   cursor: not-allowed;
 }
 
-/* CENTER INPUT */
-/* .quantityInput {
-  width: 70px;
-  height: 42px;
-
-  border: none;
-  outline: none;
-
-  text-align: center;
-
-  background-color: #1f1f1f;
-  color: white;
-
-  font-size: 1rem;
-  font-weight: 600;
-} */
-
-/* REMOVE DEFAULT NUMBER ARROWS */
-/* .quantityInput::-webkit-outer-spin-button,
-.quantityInput::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+:global(body.light) .quantityButtonActive {
+  background-color: orange;
+  color: black;
 }
 
-.quantityInput[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}  */
+:global(body.light) .quantityButtonDisabled {
+  background-color: #e0e0e0;
+  color: #777;
+}
+
+/* CENTER INPUT */
 
 .hordeControls {
   display: flex;
